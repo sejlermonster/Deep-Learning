@@ -97,7 +97,17 @@ class ClassifierTrainer(object):
           # step_cache[p] and the momentum strength is stored in momentum.    #
           # Don't forget to also update the step_cache[p].                    #
           #####################################################################
-          pass
+          # Momentum update
+          # Momentum strength is a coefficient represented friction, damps velocity and reduces the kinetic energy
+          #it ensures that the particle stops at the bottom
+          # step_cache is our velocity at time t-1
+          # From that we subtract the learning rate multiplied the gradients, 
+          # because we go in the opposite direction of the gradient
+          dx = momentum * self.step_cache[p] - learning_rate * grads[p] # integrate velocity
+          self.step_cache[p] = dx 
+
+
+
           #####################################################################
           #                      END OF YOUR CODE                             #
           #####################################################################
@@ -105,12 +115,15 @@ class ClassifierTrainer(object):
           decay_rate = 0.99 # you could also make this an option
           if not p in self.step_cache: 
             self.step_cache[p] = np.zeros(grads[p].shape)
-          dx = np.zeros_like(grads[p]) # you can remove this after
           #####################################################################
           # TODO: implement the RMSProp update and store the parameter update #
           # dx. Don't forget to also update step_cache[p]. Use smoothing 1e-8 #
           #####################################################################
-          pass
+          eps = 1e-8
+          self.step_cache[p] = decay_rate * self.step_cache[p] + (1 - decay_rate) * grads[p]**2
+          dx = - learning_rate * grads[p] / (np.sqrt(self.step_cache[p]) + eps)
+
+
           #####################################################################
           #                      END OF YOUR CODE                             #
           #####################################################################
