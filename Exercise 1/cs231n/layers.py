@@ -22,7 +22,13 @@ def affine_forward(x, w, b):
   # TODO: Implement the affine forward pass. Store the result in out. You     #
   # will need to reshape the input into rows.                                 #
   #############################################################################
-  pass
+  # First we reshape X to mulitply it with the incoming weights
+  # We get column and row size and then reshape
+  row_size = x.shape[0]
+  col_size = np.prod(x.shape[1:])
+  x_reshape = x.reshape(row_size, col_size)
+  # Then to execute the forward pass we simply need to multiply the inputs with the weights
+  out = np.dot(x_reshape, w) + b
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -50,7 +56,27 @@ def affine_backward(dout, cache):
   #############################################################################
   # TODO: Implement the affine backward pass.                                 #
   #############################################################################
-  pass
+  # First we reshape X to mulitply it with the incoming weights
+  # We get column and row size and then reshape
+  row_size = x.shape[0]
+  col_size = np.prod(x.shape[1:])
+  x_reshape = x.reshape(row_size, col_size)
+
+  # After reshaping we calculate the backward pass
+
+  # Gradient with respect to x
+  # Gradient of x*w with respect to x is simply w, so we multiply that with the upstream gradient
+  dx2 = np.dot(dout, w.T) 
+  dx = np.reshape(dx2, x.shape)
+
+  # Gradient with respect to weights
+  # # Gradient of x*w with respect to w is simply x, so we multiply that with the upstream gradient
+  dw = np.dot(x_reshape.T, dout)
+
+  # Gradient with respect to bias
+  # Biases are added so the gradient is simply 1, so we multiply that with the upstream gradient.
+  db = np.dot(dout.T, np.ones(row_size))
+
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -72,7 +98,8 @@ def relu_forward(x):
   #############################################################################
   # TODO: Implement the ReLU forward pass.                                    #
   #############################################################################
-  pass
+  reluF = lambda x: np.maximum(0, x)
+  out = reluF(x)
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -95,7 +122,17 @@ def relu_backward(dout, cache):
   #############################################################################
   # TODO: Implement the ReLU backward pass.                                   #
   #############################################################################
-  pass
+  #reluf function
+  reluF = lambda x: np.maximum(0, x)
+  
+  out = reluF(x)
+  # Reluf is a max gate and so we can think of it as a router of gradients
+  # the max value is the one that the gradient is routated to
+  # we simpy set the out value to 1 if the out value is bigger than 0
+  out[out > 0] = 1
+  
+  # Multiply out  with upstream gradient, to "route" the gradient
+  dx = out * dout
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
