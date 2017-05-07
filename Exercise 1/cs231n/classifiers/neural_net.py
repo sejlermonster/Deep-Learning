@@ -117,20 +117,34 @@ def two_layer_net(X, model, y=None, reg=0.0):
   # and biases. Store the results in the grads dictionary. For example,       #
   # grads['W1'] should store the gradient on W1, and be a matrix of same size #
   #############################################################################
+  # Firstly we calculate the gradient on the scores.
+  # The gradient from the loss function is simply -1.
+  # This is subtracted from the correct scores for each
+  # dscores are the probabilities for all classes as a row for each sample
   dscores = propScores
-  # the gradient is simply -1
+  print dscores
+  #For each row(sample) in dscores 1 is subtracted from the correct element specified by y
   dscores[range(N),y] -= 1
-  # Gradient on scores
+  print dscores
+  # We then divide all elements with N(number of samples)
   dscores /= N
+  print dscores
 
-
+  # The gradient for W2 is simply the output from the RELU activation function (h1)
+  # multiplyed with the dscores that contains the gradient on the scores.
+  # d/dw(w*x) = x which is our h1 then we get the input times dscores
   grads['W2'] = np.dot(h1.T, dscores)
+  #bias is just the sum of the dscores
   grads['b2'] = np.sum(dscores, axis=0)
 
-  # next backprop into hidden layer
+  # next backprop into hidden layer. This is the scores multiplied with the weights
+  # for second layer
   dhidden = np.dot(dscores, W2.T)
-  # backprop the ReLU non-linearity
+  # backprop the ReLU non-linearity. 
+  #For elements < or equals 0  we set them equals to 0
+  # remember how Relu is just max, so it routes the gradients
   dhidden[h1 <= 0] = 0
+  # same thing as second layer - d/dw(w*x) = x, so x times our gradient for dhidden
   grads['W1'] = np.dot(X.T, dhidden)
   grads['b1'] = np.sum(dhidden, axis=0)
   
