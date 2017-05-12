@@ -106,8 +106,6 @@ class ClassifierTrainer(object):
           dx = momentum * self.step_cache[p] - learning_rate * grads[p] # integrate velocity
           self.step_cache[p] = dx 
 
-
-
           #####################################################################
           #                      END OF YOUR CODE                             #
           #####################################################################
@@ -119,7 +117,8 @@ class ClassifierTrainer(object):
           # TODO: implement the RMSProp update and store the parameter update #
           # dx. Don't forget to also update step_cache[p]. Use smoothing 1e-8 #
           #####################################################################
-          eps = 1e-8
+          #eps = 1e-8
+          eps = 1e5
           self.step_cache[p] = decay_rate * self.step_cache[p] + (1 - decay_rate) * grads[p]**2
           dx = - learning_rate * grads[p] / (np.sqrt(self.step_cache[p]) + eps)
 

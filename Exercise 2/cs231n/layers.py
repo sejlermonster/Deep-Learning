@@ -22,7 +22,13 @@ def affine_forward(x, w, b):
   # TODO: Implement the affine forward pass. Store the result in out. You     #
   # will need to reshape the input into rows.                                 #
   #############################################################################
-  pass
+  # First we reshape X to mulitply it with the incoming weights
+  # We get column and row size and then reshape
+  row_size = x.shape[0]
+  col_size = np.prod(x.shape[1:])
+  x_reshape = x.reshape(row_size, col_size)
+  # Then to execute the forward pass we simply need to multiply the inputs with the weights
+  out = np.dot(x_reshape, w) + b
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -50,7 +56,27 @@ def affine_backward(dout, cache):
   #############################################################################
   # TODO: Implement the affine backward pass.                                 #
   #############################################################################
-  pass
+  # First we reshape X to mulitply it with the incoming weights
+  # We get column and row size and then reshape
+  row_size = x.shape[0]
+  col_size = np.prod(x.shape[1:])
+  x_reshape = x.reshape(row_size, col_size)
+
+  # After reshaping we calculate the backward pass
+
+  # Gradient with respect to x
+  # Gradient of x*w with respect to x is simply w, so we multiply that with the upstream gradient
+  dx2 = np.dot(dout, w.T) 
+  dx = np.reshape(dx2, x.shape)
+
+  # Gradient with respect to weights
+  # # Gradient of x*w with respect to w is simply x, so we multiply that with the upstream gradient
+  dw = np.dot(x_reshape.T, dout)
+
+  # Gradient with respect to bias
+  # Biases are added so the gradient is simply 1, so we multiply that with the upstream gradient.
+  db = np.dot(dout.T, np.ones(row_size))
+
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -72,7 +98,8 @@ def relu_forward(x):
   #############################################################################
   # TODO: Implement the ReLU forward pass.                                    #
   #############################################################################
-  pass
+  reluF = lambda x: np.maximum(0, x)
+  out = reluF(x)
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -95,7 +122,17 @@ def relu_backward(dout, cache):
   #############################################################################
   # TODO: Implement the ReLU backward pass.                                   #
   #############################################################################
-  pass
+  #reluf function
+  reluF = lambda x: np.maximum(0, x)
+  
+  out = reluF(x)
+  # Reluf is a max gate and so we can think of it as a router of gradients
+  # the max value is the one that the gradient is routated to
+  # we simpy set the out value to 1 if the out value is bigger than 0
+  out[out > 0] = 1
+  
+  # Multiply out  with upstream gradient, to "route" the gradient
+  dx = out * dout
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -132,7 +169,13 @@ def dropout_forward(x, dropout_param):
     # TODO: Implement the training phase forward pass for inverted dropout.   #
     # Store the dropout mask in the mask variable.                            #
     ###########################################################################
-    pass
+    # mask is equal to random 
+    # random creates uniform distribution between 0 and 1.
+    # If the value is less than p then we set it equals 0 and if not we set it equals 1
+    # We divide to get inverted, so the ones wich evaluates to 1 gets a higher value
+    mask = (np.random.rand(*x.shape) < p) / p
+    # by multiplying the input with the mask we deactive some neurons
+    out = x * mask
     ###########################################################################
     #                            END OF YOUR CODE                             #
     ###########################################################################
@@ -140,7 +183,7 @@ def dropout_forward(x, dropout_param):
     ###########################################################################
     # TODO: Implement the test phase forward pass for inverted dropout.       #
     ###########################################################################
-    pass
+    out = x
     ###########################################################################
     #                            END OF YOUR CODE                             #
     ###########################################################################
@@ -163,10 +206,11 @@ def dropout_backward(dout, cache):
   mode = dropout_param['mode']
   if mode == 'train':
     ###########################################################################
-    # TODO: Implement the training phase forward pass for inverted dropout.   #
+    # TODO: Implement the training phase backward pass for inverted dropout.   #
     # Store the dropout mask in the mask variable.                            #
     ###########################################################################
-    pass
+    # we only backpropagate the acitivated neurons
+    dx = dout*mask
     ###########################################################################
     #                            END OF YOUR CODE                             #
     ###########################################################################
@@ -203,7 +247,43 @@ def conv_forward_naive(x, w, b, conv_param):
   # TODO: Implement the convolutional forward pass.                           #
   # Hint: you can use the function np.pad for padding.                        #
   #############################################################################
-  pass
+  #  N(data points), C(channels), H(height), W(Width)
+  N, C, H, W = x.shape
+  # F (diffferent filters), C(channels), HH ( channel height), WW(channel width)
+  F, C, HH, WW = w.shape
+  # number of pixels that will be used to zero-pad inud
+  pad = conv_param['pad']
+  #Stride
+  stride = conv_param['stride']
+  # Formula for output data is given as
+  H_out = 1 + (H + 2 * pad - HH) / stride
+  W_out = 1 + (W + 2 * pad - WW) / stride
+  # This is the shape of out, we initialize to all zeroes
+  out = np.zeros((N, F, H_out, W_out))
+
+  # padding
+  #numpy.pad(array, pad_width, mode, **kwargs)
+  x_with_pad = np.pad(x, ((0,0),(0,0),(pad,pad),(pad,pad)), 'constant', constant_values=0)
+  #Width an height of input including zero padding
+  _, _, H, W = x_with_pad.shape
+
+  # convolution
+  # running N iterations, one iteration for each data point
+  for i in range(N):
+    x_data = x_with_pad[i]
+
+    xx, yy = -1, -1
+    for j in range(0, H-HH+1, stride):
+      yy += 1
+      for k in range(0, W-WW+1, stride):
+        xx += 1
+        x_rf = x_data[:, j:j+HH, k:k+WW]
+
+        for l in range(0, F):
+          conv_value = np.sum(x_rf * w[l]) + b[l]
+          out[i, l, yy, xx] = conv_value
+
+      xx = -1
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -228,7 +308,19 @@ def conv_backward_naive(dout, cache):
   #############################################################################
   # TODO: Implement the convolutional backward pass.                          #
   #############################################################################
-  pass
+  x, w, b, conv_param = cache
+  #  N(data points), C(channels), H(height), W(Width)
+  N, C, H, W = x.shape
+  # F (diffferent filters), C(channels), HH ( channel height), WW(channel width)
+  F, C, HH, WW = w.shape
+  # shape of upstream derivatives
+  _,_, H_prime, 
+  # number of pixels that will be used to zero-pad inud
+  pad = conv_param['pad']
+  #Stride
+  stride = conv_param['stride']
+
+
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################

@@ -122,14 +122,11 @@ def two_layer_net(X, model, y=None, reg=0.0):
   # This is subtracted from the correct scores for each
   # dscores are the probabilities for all classes as a row for each sample
   dscores = propScores
-  print dscores
   #For each row(sample) in dscores 1 is subtracted from the correct element specified by y
   dscores[range(N),y] -= 1
-  print dscores
   # We then divide all elements with N(number of samples)
   dscores /= N
-  print dscores
-
+  
   # The gradient for W2 is simply the output from the RELU activation function (h1)
   # multiplyed with the dscores that contains the gradient on the scores.
   # d/dw(w*x) = x which is our h1 then we get the input times dscores
