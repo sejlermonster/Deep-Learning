@@ -255,11 +255,11 @@ def conv_forward_naive(x, w, b, conv_param):
   pad = conv_param['pad']
   #Stride
   stride = conv_param['stride']
-  # Formula for output data is given as
-  H_out = 1 + (H + 2 * pad - HH) / stride
-  W_out = 1 + (W + 2 * pad - WW) / stride
+  # Formula for h prime and w prime are given above
+  H_prime = 1 + (H + 2 * pad - HH) / stride
+  W_prime = 1 + (W + 2 * pad - WW) / stride
   # This is the shape of out, we initialize to all zeroes
-  out = np.zeros((N, F, H_out, W_out))
+  out = np.zeros((N, F, H_prime, W_prime))
 
   # padding
   #numpy.pad(array, pad_width, mode, **kwargs)
@@ -269,21 +269,29 @@ def conv_forward_naive(x, w, b, conv_param):
 
   # convolution
   # running N iterations, one iteration for each data point
-  for i in range(N):
-    x_data = x_with_pad[i]
-
-    xx, yy = -1, -1
-    for j in range(0, H-HH+1, stride):
-      yy += 1
-      for k in range(0, W-WW+1, stride):
-        xx += 1
-        x_rf = x_data[:, j:j+HH, k:k+WW]
-
-        for l in range(0, F):
-          conv_value = np.sum(x_rf * w[l]) + b[l]
-          out[i, l, yy, xx] = conv_value
-
-      xx = -1
+  for n in range(N):
+    #Extract the ith row of x_with_bad
+    x_pad = x_with_pad[i]
+    # run iteration for each filter
+    for f in range(F):
+      #run iteration corresponding to the height of the output
+      for h_prime in range(H_prime):
+        #run iteration corresponding to the width of the output
+        for w_prime in range(W_prime):
+          # bottom height
+          h1 = h_prime * stride
+          # top height (by adding channel height)
+          h2 = h_prime * stride + HH
+          # start width
+          w1 = w_prime * stride
+          # end width ( by adding channel width)
+          w2 = w_prime * stride + WW
+          # the window is the x_padded from h1 to h2 and w1-w2 to get the window
+          window = x_pad[:, h1:h2, w1:w2]
+          # Output data has shape (N, F, H', W') 
+          # we insert on n (datapoint) f(filter), h_prime and w_prime, 
+          # The output is sum of the window times the filter weight for f + the bias for f
+          out[n, f, h_prime, w_prime] = np.sum(window * w[f,:,:,:]) + b[f]
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -314,12 +322,31 @@ def conv_backward_naive(dout, cache):
   # F (diffferent filters), C(channels), HH ( channel height), WW(channel width)
   F, C, HH, WW = w.shape
   # shape of upstream derivatives
-  _,_, H_prime, 
+  _, _, H_prime, W_prime = dout.shape
   # number of pixels that will be used to zero-pad inud
   pad = conv_param['pad']
   #Stride
   stride = conv_param['stride']
 
+  # array of shame shape and type
+  dx = np.zeros_like(x)
+  dw = np.zeros_like(w)
+  db = np.zeros_like(b)
+
+  for n in xrange(N):
+      dx_pad = np.pad(dx[n,:,:,:], ((0,0),(pad,pad),(pad,pad)), 'constant')
+      x_pad = np.pad(x[n,:,:,:], ((0,0),(pad,pad),(pad,pad)), 'constant')
+      for f in xrange(F):
+        for h_prime in xrange(H_prime):
+          for w_prime in xrange(W_prime):
+            h1 = h_prime * stride
+            h2 = h_prime * stride + HH
+            w1 = w_prime * stride
+            w2 = w_prime * stride + WW
+            dx_pad[:, h1:h2, w1:w2] += w[f,:,:,:] * dout[n,f,h_prime,w_prime]
+            dw[f,:,:,:] += x_pad[:, h1:h2, w1:w2] * dout[n,f,h_prime,w_prime]
+            db[f] += dout[n,f,h_prime,w_prime]
+      dx[n,:,:,:] = dx_pad[:,1:-1,1:-1]
 
   #############################################################################
   #                             END OF YOUR CODE                              #
