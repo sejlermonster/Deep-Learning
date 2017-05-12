@@ -271,7 +271,7 @@ def conv_forward_naive(x, w, b, conv_param):
   # running N iterations, one iteration for each data point
   for n in range(N):
     #Extract the ith row of x_with_bad
-    x_pad = x_with_pad[i]
+    x_pad = x_with_pad[n]
     # run iteration for each filter
     for f in range(F):
       #run iteration corresponding to the height of the output
@@ -333,19 +333,29 @@ def conv_backward_naive(dout, cache):
   dw = np.zeros_like(w)
   db = np.zeros_like(b)
 
-  for n in xrange(N):
-      dx_pad = np.pad(dx[n,:,:,:], ((0,0),(pad,pad),(pad,pad)), 'constant')
-      x_pad = np.pad(x[n,:,:,:], ((0,0),(pad,pad),(pad,pad)), 'constant')
-      for f in xrange(F):
-        for h_prime in xrange(H_prime):
-          for w_prime in xrange(W_prime):
-            h1 = h_prime * stride
-            h2 = h_prime * stride + HH
-            w1 = w_prime * stride
-            w2 = w_prime * stride + WW
-            dx_pad[:, h1:h2, w1:w2] += w[f,:,:,:] * dout[n,f,h_prime,w_prime]
-            dw[f,:,:,:] += x_pad[:, h1:h2, w1:w2] * dout[n,f,h_prime,w_prime]
-            db[f] += dout[n,f,h_prime,w_prime]
+  # iterate for each datapoints
+  for n in xrange(N):   
+    #Zero padding for dx and x
+    dx_pad = np.pad(dx[n,:,:,:], ((0,0),(pad,pad),(pad,pad)), 'constant')
+    x_pad = np.pad(x[n,:,:,:], ((0,0),(pad,pad),(pad,pad)), 'constant')
+    #Backpropagate for each filter
+    for f in xrange(F):
+      #for height and width of output data of forward pass
+      for h_prime in xrange(H_prime):
+        for w_prime in xrange(W_prime):
+          #Get window size
+          # start height
+          h1 = h_prime * stride
+          # end height ( plus channel height)
+          h2 = h_prime * stride + HH
+          # start width
+          w1 = w_prime * stride
+          # end width (plus channel width)
+          w2 = w_prime * stride + WW
+          
+          dx_pad[:, h1:h2, w1:w2] += w[f,:,:,:] * dout[n,f,h_prime,w_prime]
+          dw[f,:,:,:] += x_pad[:, h1:h2, w1:w2] * dout[n,f,h_prime,w_prime]
+          db[f] += dout[n,f,h_prime,w_prime]
       dx[n,:,:,:] = dx_pad[:,1:-1,1:-1]
 
   #############################################################################
