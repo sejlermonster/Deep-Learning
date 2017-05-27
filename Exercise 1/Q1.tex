@@ -1,0 +1,3293 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font than Computer Modern for most use cases
+    \usepackage{palatino}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Q1}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{Implementing a Neural
+Network}\label{implementing-a-neural-network}
+
+In this exercise we will develop a neural network with fully-connected
+layers to perform classification, and test it out on the CIFAR-10
+dataset.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{c+c1}{\PYZsh{} A bit of setup}
+         
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+         \PY{k+kn}{import} \PY{n+nn}{matplotlib.pyplot} \PY{k+kn}{as} \PY{n+nn}{plt}
+         
+         \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+         \PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{10.0}\PY{p}{,} \PY{l+m+mf}{8.0}\PY{p}{)} \PY{c+c1}{\PYZsh{} set default size of plots}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{image.interpolation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nearest}\PY{l+s+s1}{\PYZsq{}}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{image.cmap}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}
+         
+         \PY{c+c1}{\PYZsh{} for auto\PYZhy{}reloading external modules}
+         \PY{c+c1}{\PYZsh{} see http://stackoverflow.com/questions/1907993/autoreload\PYZhy{}of\PYZhy{}modules\PYZhy{}in\PYZhy{}ipython}
+         \PY{o}{\PYZpc{}}\PY{k}{load\PYZus{}ext} autoreload
+         \PY{o}{\PYZpc{}}\PY{k}{autoreload} 2
+         
+         \PY{k}{def} \PY{n+nf}{rel\PYZus{}error}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{:}
+           \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} returns relative error \PYZdq{}\PYZdq{}\PYZdq{}}
+           \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{y}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{maximum}\PY{p}{(}\PY{l+m+mf}{1e\PYZhy{}8}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The autoreload extension is already loaded. To reload it, use:
+  \%reload\_ext autoreload
+
+    \end{Verbatim}
+
+    The neural network parameters will be stored in a dictionary
+(\texttt{model} below), where the keys are the parameter names and the
+values are numpy arrays. Below, we initialize toy data and a toy model
+that we will use to verify your implementations.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{c+c1}{\PYZsh{} Create some toy data to check your implementations}
+         \PY{n}{input\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{4}
+         \PY{n}{hidden\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{num\PYZus{}classes} \PY{o}{=} \PY{l+m+mi}{3}
+         \PY{n}{num\PYZus{}inputs} \PY{o}{=} \PY{l+m+mi}{5}
+         
+         \PY{k}{def} \PY{n+nf}{init\PYZus{}toy\PYZus{}model}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+           \PY{n}{model} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+           \PY{n}{model}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.6}\PY{p}{,} \PY{n}{num}\PY{o}{=}\PY{n}{input\PYZus{}size}\PY{o}{*}\PY{n}{hidden\PYZus{}size}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{input\PYZus{}size}\PY{p}{,} \PY{n}{hidden\PYZus{}size}\PY{p}{)}
+           \PY{n}{model}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.3}\PY{p}{,} \PY{l+m+mf}{0.7}\PY{p}{,} \PY{n}{num}\PY{o}{=}\PY{n}{hidden\PYZus{}size}\PY{p}{)}
+           \PY{n}{model}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.4}\PY{p}{,} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{n}{num}\PY{o}{=}\PY{n}{hidden\PYZus{}size}\PY{o}{*}\PY{n}{num\PYZus{}classes}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{hidden\PYZus{}size}\PY{p}{,} \PY{n}{num\PYZus{}classes}\PY{p}{)}
+           \PY{n}{model}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{num}\PY{o}{=}\PY{n}{num\PYZus{}classes}\PY{p}{)}
+           \PY{k}{return} \PY{n}{model}
+         
+         \PY{k}{def} \PY{n+nf}{init\PYZus{}toy\PYZus{}data}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+           \PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{num}\PY{o}{=}\PY{n}{num\PYZus{}inputs}\PY{o}{*}\PY{n}{input\PYZus{}size}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{num\PYZus{}inputs}\PY{p}{,} \PY{n}{input\PYZus{}size}\PY{p}{)}
+           \PY{n}{y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+           \PY{k}{return} \PY{n}{X}\PY{p}{,} \PY{n}{y}
+         
+         \PY{n}{model} \PY{o}{=} \PY{n}{init\PYZus{}toy\PYZus{}model}\PY{p}{(}\PY{p}{)}
+         \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{init\PYZus{}toy\PYZus{}data}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \section{Forward pass: compute
+scores}\label{forward-pass-compute-scores}
+
+Open the file \texttt{cs231n/classifiers/neural\_net.py} and look at the
+function \texttt{two\_layer\_net}. This function is very similar to the
+loss functions you have written for the SVM and Softmax exercises: It
+takes the data and weights and computes the class scores, the loss, and
+the gradients on the parameters.
+
+Implement the first part of the forward pass which uses the weights and
+biases to compute the scores for all inputs.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{k+kn}{from} \PY{n+nn}{cs231n.classifiers.neural\PYZus{}net} \PY{k+kn}{import} \PY{n}{two\PYZus{}layer\PYZus{}net}
+         
+         \PY{n}{scores} \PY{o}{=} \PY{n}{two\PYZus{}layer\PYZus{}net}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{model}\PY{p}{)}
+         \PY{k}{print} \PY{n}{scores}
+         \PY{n}{correct\PYZus{}scores} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5328368}\PY{p}{,} \PY{l+m+mf}{0.20031504}\PY{p}{,} \PY{l+m+mf}{0.93346689}\PY{p}{]}\PY{p}{,}
+          \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.59412164}\PY{p}{,} \PY{l+m+mf}{0.15498488}\PY{p}{,} \PY{l+m+mf}{0.9040914} \PY{p}{]}\PY{p}{,}
+          \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.67658362}\PY{p}{,} \PY{l+m+mf}{0.08978957}\PY{p}{,} \PY{l+m+mf}{0.85616275}\PY{p}{]}\PY{p}{,}
+          \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.77092643}\PY{p}{,} \PY{l+m+mf}{0.01339997}\PY{p}{,} \PY{l+m+mf}{0.79772637}\PY{p}{]}\PY{p}{,}
+          \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.89110401}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{0.08754544}\PY{p}{,} \PY{l+m+mf}{0.71601312}\PY{p}{]}\PY{p}{]}
+         
+         \PY{c+c1}{\PYZsh{} the difference should be very small. We get 3e\PYZhy{}8}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Difference between your scores and correct scores:}\PY{l+s+s1}{\PYZsq{}}
+         \PY{k}{print} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{scores} \PY{o}{\PYZhy{}} \PY{n}{correct\PYZus{}scores}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[-0.5328368   0.20031504  0.93346689]
+ [-0.59412164  0.15498488  0.9040914 ]
+ [-0.67658362  0.08978957  0.85616275]
+ [-0.77092643  0.01339997  0.79772637]
+ [-0.89110401 -0.08754544  0.71601312]]
+Difference between your scores and correct scores:
+3.84868227808e-08
+
+    \end{Verbatim}
+
+    \section{Forward pass: compute loss}\label{forward-pass-compute-loss}
+
+In the same function, implement the second part that computes the data
+and regularizaion loss.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{reg} \PY{o}{=} \PY{l+m+mf}{0.1}
+         \PY{n}{loss}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{two\PYZus{}layer\PYZus{}net}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{model}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{reg}\PY{p}{)}
+         \PY{n}{correct\PYZus{}loss} \PY{o}{=} \PY{l+m+mf}{1.38191946092}
+         
+         \PY{c+c1}{\PYZsh{} should be very small, we get 5e\PYZhy{}12}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Difference between your loss and correct loss:}\PY{l+s+s1}{\PYZsq{}}
+         \PY{k}{print} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{loss} \PY{o}{\PYZhy{}} \PY{n}{correct\PYZus{}loss}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Difference between your loss and correct loss:
+4.67736960275e-12
+
+    \end{Verbatim}
+
+    \section{Backward pass}\label{backward-pass}
+
+Implement the rest of the function. This will compute the gradient of
+the loss with respect to the variables \texttt{W1}, \texttt{b1},
+\texttt{W2}, and \texttt{b2}. Now that you (hopefully!) have a correctly
+implemented forward pass, you can debug your backward pass using a
+numeric gradient check:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{k+kn}{from} \PY{n+nn}{cs231n.gradient\PYZus{}check} \PY{k+kn}{import} \PY{n}{eval\PYZus{}numerical\PYZus{}gradient}
+         
+         \PY{c+c1}{\PYZsh{} Use numeric gradient checking to check your implementation of the backward pass.}
+         \PY{c+c1}{\PYZsh{} If your implementation is correct, the difference between the numeric and}
+         \PY{c+c1}{\PYZsh{} analytic gradients should be less than 1e\PYZhy{}8 for each of W1, W2, b1, and b2.}
+         
+         \PY{n}{loss}\PY{p}{,} \PY{n}{grads} \PY{o}{=} \PY{n}{two\PYZus{}layer\PYZus{}net}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{model}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{reg}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} these should all be less than 1e\PYZhy{}8 or so}
+         \PY{k}{for} \PY{n}{param\PYZus{}name} \PY{o+ow}{in} \PY{n}{grads}\PY{p}{:}
+           \PY{n}{param\PYZus{}grad\PYZus{}num} \PY{o}{=} \PY{n}{eval\PYZus{}numerical\PYZus{}gradient}\PY{p}{(}\PY{k}{lambda} \PY{n}{W}\PY{p}{:} \PY{n}{two\PYZus{}layer\PYZus{}net}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{model}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{reg}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{model}\PY{p}{[}\PY{n}{param\PYZus{}name}\PY{p}{]}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}
+           \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s1}{ max relative error: }\PY{l+s+si}{\PYZpc{}e}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{param\PYZus{}name}\PY{p}{,} \PY{n}{rel\PYZus{}error}\PY{p}{(}\PY{n}{param\PYZus{}grad\PYZus{}num}\PY{p}{,} \PY{n}{grads}\PY{p}{[}\PY{n}{param\PYZus{}name}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+           
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483422 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099751]
+ [ 0.02502782  0.05483421 -0.07986203]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687914]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529991 -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567     0.12134467]]
+W1 max relative error: 4.426512e-09
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432534 -0.14567001  0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432531 -0.14567     0.12134469]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14566997  0.12134465]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432533 -0.14567003  0.1213447 ]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432531 -0.14567003  0.12134472]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432534 -0.14566998  0.12134464]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569762  0.0552999  -0.08099752]
+ [ 0.02502785  0.05483421 -0.07986206]
+ [ 0.02432537 -0.14567002  0.12134465]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.0256976   0.05529991 -0.08099751]
+ [ 0.02502779  0.05483423 -0.07986202]
+ [ 0.02432528 -0.14566999  0.12134471]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529992 -0.08099753]
+ [ 0.02502781  0.05483427 -0.07986208]
+ [ 0.02432531 -0.14566991  0.1213446 ]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.05529989 -0.0809975 ]
+ [ 0.02502783  0.05483416 -0.07986199]
+ [ 0.02432534 -0.14567009  0.12134475]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.0256976   0.05529989 -0.08099749]
+ [ 0.0250278   0.05483417 -0.07986197]
+ [ 0.02432529 -0.14567008  0.12134479]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569762  0.05529992 -0.08099754]
+ [ 0.02502784  0.05483426 -0.0798621 ]
+ [ 0.02432536 -0.14566993  0.12134457]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635466 -0.14425706  0.11790241]
+ [ 0.02569765  0.05529989 -0.08099754]
+ [ 0.02502788  0.0548342  -0.07986208]
+ [ 0.0243254  -0.14567003  0.12134462]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635462 -0.14425705  0.11790243]
+ [ 0.02569757  0.05529992 -0.08099749]
+ [ 0.02502776  0.05483424 -0.07986199]
+ [ 0.02432524 -0.14566998  0.12134473]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635463 -0.14425703  0.1179024 ]
+ [ 0.0256976   0.05529997 -0.08099757]
+ [ 0.0250278   0.05483432 -0.07986213]
+ [ 0.0243253  -0.14566986  0.12134456]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425709  0.11790244]
+ [ 0.02569762  0.05529984 -0.08099746]
+ [ 0.02502784  0.05483411 -0.07986195]
+ [ 0.02432535 -0.14567015  0.1213448 ]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635463 -0.14425708  0.11790245]
+ [ 0.02569758  0.05529985 -0.08099743]
+ [ 0.02502778  0.05483413 -0.07986191]
+ [ 0.02432527 -0.14567013  0.12134486]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635465 -0.14425703  0.11790238]
+ [ 0.02569764  0.05529996 -0.0809976 ]
+ [ 0.02502786  0.05483431 -0.07986217]
+ [ 0.02432538 -0.14566988  0.1213445 ]]
+[[-0.17302697  0.05614785  0.11687912]
+ [ 0.02635468 -0.14425707  0.11790239]
+ [ 0.02569768  0.05529988 -0.08099756]
+ [ 0.02502791  0.05483419 -0.0798621 ]
+ [ 0.02432544 -0.14567004  0.1213446 ]]
+[[-0.17302701  0.05614786  0.11687915]
+ [ 0.0263546  -0.14425704  0.11790245]
+ [ 0.02569754  0.05529993 -0.08099747]
+ [ 0.02502773  0.05483424 -0.07986197]
+ [ 0.02432521 -0.14566997  0.12134476]]
+[[-0.173027    0.05614789  0.11687911]
+ [ 0.02635462 -0.14425698  0.11790236]
+ [ 0.02569759  0.05530002 -0.08099761]
+ [ 0.02502779  0.05483438 -0.07986217]
+ [ 0.02432529 -0.1456698   0.12134451]]
+[[-0.17302699  0.05614783  0.11687916]
+ [ 0.02635465 -0.14425713  0.11790248]
+ [ 0.02569763  0.05529979 -0.08099742]
+ [ 0.02502785  0.05483405 -0.0798619 ]
+ [ 0.02432536 -0.14567021  0.12134485]]
+[[-0.173027    0.05614783  0.11687917]
+ [ 0.02635461 -0.14425712  0.11790251]
+ [ 0.02569757  0.05529981 -0.08099737]
+ [ 0.02502776  0.05483408 -0.07986184]
+ [ 0.02432525 -0.14567017  0.12134493]]
+[[-0.17302698  0.05614788  0.1168791 ]
+ [ 0.02635467 -0.144257    0.11790233]
+ [ 0.02569766  0.0553     -0.08099766]
+ [ 0.02502788  0.05483435 -0.07986223]
+ [ 0.0243254  -0.14566983  0.12134443]]
+[[-0.17302695  0.05614784  0.11687911]
+ [ 0.02635471 -0.14425708  0.11790237]
+ [ 0.0256977   0.05529988 -0.08099758]
+ [ 0.02502794  0.05483418 -0.07986212]
+ [ 0.02432547 -0.14567005  0.12134458]]
+[[-0.17302703  0.05614787  0.11687916]
+ [ 0.02635457 -0.14425704  0.11790247]
+ [ 0.02569752  0.05529993 -0.08099745]
+ [ 0.0250277   0.05483425 -0.07986195]
+ [ 0.02432518 -0.14566996  0.12134478]]
+[[-0.173027    0.05614793  0.11687908]
+ [ 0.02635462 -0.14425694  0.11790232]
+ [ 0.02569758  0.05530007 -0.08099765]
+ [ 0.02502778  0.05483443 -0.07986221]
+ [ 0.02432528 -0.14566974  0.12134446]]
+[[-0.17302698  0.05614779  0.11687919]
+ [ 0.02635466 -0.14425718  0.11790252]
+ [ 0.02569764  0.05529974 -0.08099738]
+ [ 0.02502786  0.054834   -0.07986186]
+ [ 0.02432537 -0.14567027  0.1213449 ]]
+[[-0.17302702  0.0561478   0.11687922]
+ [ 0.02635459 -0.14425715  0.11790256]
+ [ 0.02569755  0.05529977 -0.08099731]
+ [ 0.02502774  0.05483404 -0.07986178]
+ [ 0.02432523 -0.14567022  0.121345  ]]
+[[-0.17302696  0.05614791  0.11687905]
+ [ 0.02635468 -0.14425696  0.11790228]
+ [ 0.02569767  0.05530004 -0.08099772]
+ [ 0.0250279   0.0548344  -0.0798623 ]
+ [ 0.02432542 -0.14566978  0.12134436]]
+[[-0.17302693  0.05614784  0.11687909]
+ [ 0.02635473 -0.14425709  0.11790236]
+ [ 0.02569773  0.05529987 -0.0809976 ]
+ [ 0.02502797  0.05483417 -0.07986214]
+ [ 0.0243255  -0.14567006  0.12134456]]
+[[-0.17302705  0.05614788  0.11687918]
+ [ 0.02635455 -0.14425703  0.11790248]
+ [ 0.02569749  0.05529994 -0.08099743]
+ [ 0.02502767  0.05483426 -0.07986193]
+ [ 0.02432515 -0.14566995  0.1213448 ]]
+[[-0.17302701  0.05614797  0.11687905]
+ [ 0.02635461 -0.14425689  0.11790229]
+ [ 0.02569757  0.05530012 -0.08099769]
+ [ 0.02502777  0.05483449 -0.07986226]
+ [ 0.02432527 -0.14566968  0.12134441]]
+[[-0.17302697  0.05614775  0.11687922]
+ [ 0.02635467 -0.14425722  0.11790255]
+ [ 0.02569765  0.05529969 -0.08099734]
+ [ 0.02502787  0.05483395 -0.07986181]
+ [ 0.02432538 -0.14567033  0.12134495]]
+[[-0.17302703  0.05614777  0.11687927]
+ [ 0.02635458 -0.14425719  0.11790262]
+ [ 0.02569753  0.05529973 -0.08099725]
+ [ 0.02502772  0.05483399 -0.07986171]
+ [ 0.0243252  -0.14567027  0.12134507]]
+[[-0.17302695  0.05614795  0.116879  ]
+ [ 0.0263547  -0.14425692  0.11790222]
+ [ 0.02569769  0.05530008 -0.08099778]
+ [ 0.02502792  0.05483444 -0.07986236]
+ [ 0.02432544 -0.14566973  0.12134429]]
+[[-0.17302691  0.05614783  0.11687908]
+ [ 0.02635476 -0.1442571   0.11790234]
+ [ 0.02569776  0.05529986 -0.08099762]
+ [ 0.025028    0.05483416 -0.07986216]
+ [ 0.02432553 -0.14567007  0.12134454]]
+[[-0.17302708  0.05614789  0.11687919]
+ [ 0.02635452 -0.14425702  0.1179025 ]
+ [ 0.02569746  0.05529995 -0.08099741]
+ [ 0.02502764  0.05483427 -0.07986191]
+ [ 0.02432512 -0.14566994  0.12134482]]
+[[-0.17302702  0.05614801  0.11687901]
+ [ 0.0263546  -0.14425685  0.11790225]
+ [ 0.02569756  0.05530017 -0.08099773]
+ [ 0.02502776  0.05483454 -0.0798623 ]
+ [ 0.02432526 -0.14566962  0.12134436]]
+[[-0.17302696  0.05614771  0.11687926]
+ [ 0.02635468 -0.14425727  0.11790259]
+ [ 0.02569766  0.05529964 -0.0809973 ]
+ [ 0.02502788  0.05483389 -0.07986177]
+ [ 0.02432539 -0.14567038  0.121345  ]]
+[[-0.17302705  0.05614774  0.11687931]
+ [ 0.02635456 -0.14425723  0.11790267]
+ [ 0.02569751  0.05529969 -0.08099719]
+ [ 0.0250277   0.05483395 -0.07986165]
+ [ 0.02432518 -0.14567032  0.12134514]]
+[[-0.17302693  0.05614798  0.11687895]
+ [ 0.02635472 -0.14425689  0.11790217]
+ [ 0.02569771  0.05530012 -0.08099784]
+ [ 0.02502794  0.05483448 -0.07986243]
+ [ 0.02432547 -0.14566969  0.12134422]]
+[[-0.17302688  0.05614782  0.11687906]
+ [ 0.02635478 -0.1442571   0.11790232]
+ [ 0.02569779  0.05529985 -0.08099764]
+ [ 0.02502803  0.05483415 -0.07986218]
+ [ 0.02432556 -0.14567008  0.12134451]]
+[[-0.1730271   0.05614789  0.11687921]
+ [ 0.02635449 -0.14425701  0.11790252]
+ [ 0.02569743  0.05529996 -0.08099739]
+ [ 0.02502761  0.05483428 -0.07986189]
+ [ 0.02432509 -0.14566993  0.12134484]]
+[[-0.17302703  0.05614805  0.11687898]
+ [ 0.02635459 -0.1442568   0.11790221]
+ [ 0.02569755  0.05530022 -0.08099778]
+ [ 0.02502775  0.05483459 -0.07986235]
+ [ 0.02432525 -0.14566956  0.12134431]]
+[[-0.17302696  0.05614767  0.11687929]
+ [ 0.02635468 -0.14425731  0.11790263]
+ [ 0.02569767  0.05529959 -0.08099726]
+ [ 0.02502788  0.05483384 -0.07986172]
+ [ 0.0243254  -0.14567044  0.12134504]]
+[[-0.17302707  0.0561477   0.11687936]
+ [ 0.02635454 -0.14425726  0.11790272]
+ [ 0.02569749  0.05529965 -0.08099713]
+ [ 0.02502768  0.0548339  -0.07986158]
+ [ 0.02432516 -0.14567037  0.12134521]]
+[[-0.17302692  0.05614801  0.11687891]
+ [ 0.02635474 -0.14425685  0.11790211]
+ [ 0.02569773  0.05530016 -0.0809979 ]
+ [ 0.02502796  0.05483453 -0.07986249]
+ [ 0.02432549 -0.14566964  0.12134415]]
+[[-0.17302686  0.05614781  0.11687904]
+ [ 0.02635481 -0.14425711  0.1179023 ]
+ [ 0.02569781  0.05529984 -0.08099765]
+ [ 0.02502806  0.05483414 -0.0798622 ]
+ [ 0.02432559 -0.14567009  0.12134449]]
+[[-0.17302712  0.0561479   0.11687922]
+ [ 0.02635447 -0.144257    0.11790253]
+ [ 0.02569741  0.05529997 -0.08099738]
+ [ 0.02502758  0.05483429 -0.07986187]
+ [ 0.02432506 -0.14566992  0.12134486]]
+[[-0.17302703  0.05614809  0.11687895]
+ [ 0.02635458 -0.14425676  0.11790218]
+ [ 0.02569755  0.05530027 -0.08099782]
+ [ 0.02502774  0.05483465 -0.07986239]
+ [ 0.02432524 -0.1456695   0.12134426]]
+[[-0.17302695  0.05614763  0.11687932]
+ [ 0.02635469 -0.14425736  0.11790266]
+ [ 0.02569768  0.05529954 -0.08099721]
+ [ 0.02502789  0.05483378 -0.07986168]
+ [ 0.02432541 -0.1456705   0.12134509]]
+[[-0.17302708  0.05614767  0.11687941]
+ [ 0.02635452 -0.1442573   0.11790278]
+ [ 0.02569747  0.0552996  -0.08099708]
+ [ 0.02502766  0.05483386 -0.07986152]
+ [ 0.02432514 -0.14567042  0.12134528]]
+[[-0.1730269   0.05614804  0.11687886]
+ [ 0.02635475 -0.14425681  0.11790206]
+ [ 0.02569775  0.05530021 -0.08099796]
+ [ 0.02502798  0.05483457 -0.07986256]
+ [ 0.02432551 -0.14566959  0.12134408]]
+W2 max relative error: 1.401432e-09
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302676  0.05614778  0.11687898]
+ [ 0.02635487 -0.14425713  0.11790226]
+ [ 0.02569783  0.05529983 -0.08099767]
+ [ 0.02502804  0.05483415 -0.07986219]
+ [ 0.02432554 -0.14567007  0.12134453]]
+[[-0.17302723  0.05614793  0.11687929]
+ [ 0.02635441 -0.14425698  0.11790257]
+ [ 0.02569739  0.05529998 -0.08099736]
+ [ 0.0250276   0.05483428 -0.07986189]
+ [ 0.02432511 -0.14566994  0.12134483]]
+[[-0.17302707  0.05614826  0.11687881]
+ [ 0.02635456 -0.14425666  0.11790209]
+ [ 0.02569754  0.05530031 -0.08099784]
+ [ 0.02502775  0.05483461 -0.07986237]
+ [ 0.02432526 -0.14566961  0.12134435]]
+[[-0.17302692  0.05614745  0.11687946]
+ [ 0.02635471 -0.14425746  0.11790275]
+ [ 0.02569768  0.0552995  -0.08099719]
+ [ 0.02502789  0.05483382 -0.07986171]
+ [ 0.02432539 -0.1456704   0.12134501]]
+[[-0.17302715  0.05614753  0.11687962]
+ [ 0.02635448 -0.14425739  0.1179029 ]
+ [ 0.02569746  0.05529958 -0.08099703]
+ [ 0.02502767  0.05483389 -0.07986156]
+ [ 0.02432518 -0.14567033  0.12134516]]
+[[-0.17302683  0.05614819  0.11687865]
+ [ 0.02635479 -0.14425673  0.11790194]
+ [ 0.02569776  0.05530023 -0.080998  ]
+ [ 0.02502797  0.05483455 -0.07986252]
+ [ 0.02432547 -0.14566967  0.1213442 ]]
+b2 max relative error: 7.311059e-11
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502782  0.05483422 -0.07986204]
+ [ 0.02432532 -0.14567     0.12134468]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502781  0.05483421 -0.07986202]
+ [ 0.02432532 -0.14567001  0.12134469]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569761  0.0552999  -0.08099752]
+ [ 0.02502783  0.05483422 -0.07986205]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.0256976   0.0552999  -0.0809975 ]
+ [ 0.02502781  0.05483421 -0.07986202]
+ [ 0.02432532 -0.14567001  0.12134469]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425706  0.11790242]
+ [ 0.02569762  0.05529991 -0.08099753]
+ [ 0.02502783  0.05483422 -0.07986205]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635463 -0.14425706  0.11790243]
+ [ 0.0256976   0.0552999  -0.0809975 ]
+ [ 0.02502781  0.05483421 -0.07986202]
+ [ 0.02432532 -0.14567001  0.12134469]]
+[[-0.17302699  0.05614786  0.11687913]
+ [ 0.02635464 -0.14425705  0.11790241]
+ [ 0.02569762  0.05529991 -0.08099753]
+ [ 0.02502783  0.05483422 -0.07986205]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.173027    0.05614785  0.11687915]
+ [ 0.02635463 -0.14425706  0.11790243]
+ [ 0.0256976   0.0552999  -0.0809975 ]
+ [ 0.02502781  0.05483421 -0.07986202]
+ [ 0.02432532 -0.14567001  0.12134469]]
+[[-0.17302698  0.05614786  0.11687912]
+ [ 0.02635464 -0.14425705  0.11790241]
+ [ 0.02569762  0.05529991 -0.08099753]
+ [ 0.02502783  0.05483422 -0.07986205]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.173027    0.05614785  0.11687915]
+ [ 0.02635463 -0.14425706  0.11790243]
+ [ 0.0256976   0.0552999  -0.0809975 ]
+ [ 0.02502781  0.05483421 -0.07986202]
+ [ 0.02432532 -0.14567001  0.12134469]]
+[[-0.17302698  0.05614786  0.11687912]
+ [ 0.02635464 -0.14425705  0.11790241]
+ [ 0.02569762  0.05529991 -0.08099753]
+ [ 0.02502783  0.05483422 -0.07986205]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.173027    0.05614785  0.11687915]
+ [ 0.02635463 -0.14425706  0.11790243]
+ [ 0.0256976   0.0552999  -0.0809975 ]
+ [ 0.02502781  0.05483421 -0.07986202]
+ [ 0.02432532 -0.14567001  0.12134469]]
+[[-0.17302698  0.05614786  0.11687912]
+ [ 0.02635464 -0.14425705  0.11790241]
+ [ 0.02569762  0.05529991 -0.08099753]
+ [ 0.02502783  0.05483422 -0.07986205]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.173027    0.05614785  0.11687915]
+ [ 0.02635463 -0.14425706  0.11790243]
+ [ 0.0256976   0.0552999  -0.0809975 ]
+ [ 0.02502781  0.05483421 -0.07986202]
+ [ 0.02432532 -0.14567001  0.12134469]]
+[[-0.17302698  0.05614786  0.11687912]
+ [ 0.02635464 -0.14425705  0.11790241]
+ [ 0.02569762  0.05529991 -0.08099753]
+ [ 0.02502783  0.05483422 -0.07986205]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.173027    0.05614785  0.11687915]
+ [ 0.02635463 -0.14425706  0.11790243]
+ [ 0.0256976   0.0552999  -0.0809975 ]
+ [ 0.02502781  0.05483421 -0.07986202]
+ [ 0.02432532 -0.14567001  0.12134469]]
+[[-0.17302698  0.05614786  0.11687912]
+ [ 0.02635464 -0.14425705  0.11790241]
+ [ 0.02569762  0.05529991 -0.08099753]
+ [ 0.02502783  0.05483422 -0.07986205]
+ [ 0.02432533 -0.14567     0.12134467]]
+[[-0.173027    0.05614785  0.11687915]
+ [ 0.02635463 -0.14425706  0.11790243]
+ [ 0.0256976   0.0552999  -0.0809975 ]
+ [ 0.02502781  0.05483421 -0.07986202]
+ [ 0.02432532 -0.14567001  0.12134469]]
+[[-0.17302698  0.05614786  0.11687912]
+ [ 0.02635464 -0.14425705  0.11790241]
+ [ 0.02569762  0.05529991 -0.08099753]
+ [ 0.02502783  0.05483422 -0.07986205]
+ [ 0.02432533 -0.14567     0.12134467]]
+b1 max relative error: 2.746125e-08
+
+    \end{Verbatim}
+
+    \section{Train the network}\label{train-the-network}
+
+To train the network we will use SGD with Momentum. Last assignment you
+implemented vanilla SGD. You will now implement the momentum update and
+the RMSProp update. Open the file \texttt{classifier\_trainer.py} and
+familiarze yourself with the \texttt{ClassifierTrainer} class. It
+performs optimization given an arbitrary cost function data, and model.
+By default it uses vanilla SGD, which we have already implemented for
+you. First, run the optimization below using Vanilla SGD:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{k+kn}{from} \PY{n+nn}{cs231n.classifier\PYZus{}trainer} \PY{k+kn}{import} \PY{n}{ClassifierTrainer}
+         
+         \PY{n}{model} \PY{o}{=} \PY{n}{init\PYZus{}toy\PYZus{}model}\PY{p}{(}\PY{p}{)}
+         \PY{n}{trainer} \PY{o}{=} \PY{n}{ClassifierTrainer}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} call the trainer to optimize the loss}
+         \PY{c+c1}{\PYZsh{} Notice that we\PYZsq{}re using sample\PYZus{}batches=False, so we\PYZsq{}re performing Gradient Descent (no sampled batches of data)}
+         \PY{n}{best\PYZus{}model}\PY{p}{,} \PY{n}{loss\PYZus{}history}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{trainer}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,}
+                                                      \PY{n}{model}\PY{p}{,} \PY{n}{two\PYZus{}layer\PYZus{}net}\PY{p}{,}
+                                                      \PY{n}{reg}\PY{o}{=}\PY{l+m+mf}{0.001}\PY{p}{,}
+                                                      \PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}1}\PY{p}{,} \PY{n}{momentum}\PY{o}{=}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{n}{learning\PYZus{}rate\PYZus{}decay}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+                                                      \PY{n}{update}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sgd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{sample\PYZus{}batches}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{,}
+                                                      \PY{n}{num\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,}
+                                                      \PY{n}{verbose}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Final loss with vanilla SGD: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{loss\PYZus{}history}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+starting iteration  0
+starting iteration  10
+starting iteration  20
+starting iteration  30
+starting iteration  40
+starting iteration  50
+starting iteration  60
+starting iteration  70
+starting iteration  80
+starting iteration  90
+Final loss with vanilla SGD: 0.940686
+
+    \end{Verbatim}
+
+    Now fill in the \textbf{momentum update} in the first missing code block
+inside the \texttt{train} function, and run the same optimization as
+above but with the momentum update. You should see a much better result
+in the final obtained loss:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{model} \PY{o}{=} \PY{n}{init\PYZus{}toy\PYZus{}model}\PY{p}{(}\PY{p}{)}
+         \PY{n}{trainer} \PY{o}{=} \PY{n}{ClassifierTrainer}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} call the trainer to optimize the loss}
+         \PY{c+c1}{\PYZsh{} Notice that we\PYZsq{}re using sample\PYZus{}batches=False, so we\PYZsq{}re performing Gradient Descent (no sampled batches of data)}
+         \PY{n}{best\PYZus{}model}\PY{p}{,} \PY{n}{loss\PYZus{}history}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{trainer}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,}
+                                                      \PY{n}{model}\PY{p}{,} \PY{n}{two\PYZus{}layer\PYZus{}net}\PY{p}{,}
+                                                      \PY{n}{reg}\PY{o}{=}\PY{l+m+mf}{0.001}\PY{p}{,}
+                                                      \PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}1}\PY{p}{,} \PY{n}{momentum}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{learning\PYZus{}rate\PYZus{}decay}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+                                                      \PY{n}{update}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{momentum}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{sample\PYZus{}batches}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{,}
+                                                      \PY{n}{num\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,}
+                                                      \PY{n}{verbose}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}
+         \PY{n}{correct\PYZus{}loss} \PY{o}{=} \PY{l+m+mf}{0.494394}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Final loss with momentum SGD: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s1}{. We get: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{loss\PYZus{}history}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{correct\PYZus{}loss}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+starting iteration  0
+starting iteration  10
+starting iteration  20
+starting iteration  30
+starting iteration  40
+starting iteration  50
+starting iteration  60
+starting iteration  70
+starting iteration  80
+starting iteration  90
+Final loss with momentum SGD: 0.494394. We get: 0.494394
+
+    \end{Verbatim}
+
+    Now also implement the \textbf{RMSProp} update rule inside the
+\texttt{train} function and rerun the optimization:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{model} \PY{o}{=} \PY{n}{init\PYZus{}toy\PYZus{}model}\PY{p}{(}\PY{p}{)}
+         \PY{n}{trainer} \PY{o}{=} \PY{n}{ClassifierTrainer}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} call the trainer to optimize the loss}
+         \PY{c+c1}{\PYZsh{} Notice that we\PYZsq{}re using sample\PYZus{}batches=False, so we\PYZsq{}re performing Gradient Descent (no sampled batches of data)}
+         \PY{n}{best\PYZus{}model}\PY{p}{,} \PY{n}{loss\PYZus{}history}\PY{p}{,} \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{trainer}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,}
+                                                      \PY{n}{model}\PY{p}{,} \PY{n}{two\PYZus{}layer\PYZus{}net}\PY{p}{,}
+                                                      \PY{n}{reg}\PY{o}{=}\PY{l+m+mf}{0.001}\PY{p}{,}
+                                                      \PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}1}\PY{p}{,} \PY{n}{momentum}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{learning\PYZus{}rate\PYZus{}decay}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+                                                      \PY{n}{update}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rmsprop}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{sample\PYZus{}batches}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{,}
+                                                      \PY{n}{num\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,}
+                                                      \PY{n}{verbose}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}
+         \PY{n}{correct\PYZus{}loss} \PY{o}{=} \PY{l+m+mf}{0.439368}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Final loss with RMSProp: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s1}{. We get: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{loss\PYZus{}history}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{correct\PYZus{}loss}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+starting iteration  0
+starting iteration  10
+starting iteration  20
+starting iteration  30
+starting iteration  40
+starting iteration  50
+starting iteration  60
+starting iteration  70
+starting iteration  80
+starting iteration  90
+Final loss with RMSProp: 1.125201. We get: 0.439368
+
+    \end{Verbatim}
+
+    \section{Load the data}\label{load-the-data}
+
+Now that you have implemented a two-layer network that passes gradient
+checks, it's time to load up our favorite CIFAR-10 data so we can use it
+to train a classifier.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{k+kn}{from} \PY{n+nn}{cs231n.data\PYZus{}utils} \PY{k+kn}{import} \PY{n}{load\PYZus{}CIFAR10}
+         
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}CIFAR10\PYZus{}data}\PY{p}{(}\PY{n}{num\PYZus{}training}\PY{o}{=}\PY{l+m+mi}{49000}\PY{p}{,} \PY{n}{num\PYZus{}validation}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{,} \PY{n}{num\PYZus{}test}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+         \PY{l+s+sd}{    Load the CIFAR\PYZhy{}10 dataset from disk and perform preprocessing to prepare}
+         \PY{l+s+sd}{    it for the two\PYZhy{}layer neural net classifier. These are the same steps as}
+         \PY{l+s+sd}{    we used for the SVM, but condensed to a single function.  }
+         \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+             \PY{c+c1}{\PYZsh{} Load the raw CIFAR\PYZhy{}10 data}
+             \PY{n}{cifar10\PYZus{}dir} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cs231n/datasets/cifar\PYZhy{}10\PYZhy{}batches\PYZhy{}py}\PY{l+s+s1}{\PYZsq{}}
+             \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{load\PYZus{}CIFAR10}\PY{p}{(}\PY{n}{cifar10\PYZus{}dir}\PY{p}{)}
+                 
+             \PY{c+c1}{\PYZsh{} Subsample the data}
+             \PY{n}{mask} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}training}\PY{p}{,} \PY{n}{num\PYZus{}training} \PY{o}{+} \PY{n}{num\PYZus{}validation}\PY{p}{)}
+             \PY{n}{X\PYZus{}val} \PY{o}{=} \PY{n}{X\PYZus{}train}\PY{p}{[}\PY{n}{mask}\PY{p}{]}
+             \PY{n}{y\PYZus{}val} \PY{o}{=} \PY{n}{y\PYZus{}train}\PY{p}{[}\PY{n}{mask}\PY{p}{]}
+             \PY{n}{mask} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}training}\PY{p}{)}
+             \PY{n}{X\PYZus{}train} \PY{o}{=} \PY{n}{X\PYZus{}train}\PY{p}{[}\PY{n}{mask}\PY{p}{]}
+             \PY{n}{y\PYZus{}train} \PY{o}{=} \PY{n}{y\PYZus{}train}\PY{p}{[}\PY{n}{mask}\PY{p}{]}
+             \PY{n}{mask} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}test}\PY{p}{)}
+             \PY{n}{X\PYZus{}test} \PY{o}{=} \PY{n}{X\PYZus{}test}\PY{p}{[}\PY{n}{mask}\PY{p}{]}
+             \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{y\PYZus{}test}\PY{p}{[}\PY{n}{mask}\PY{p}{]}
+         
+             \PY{c+c1}{\PYZsh{} Normalize the data: subtract the mean image}
+             \PY{n}{mean\PYZus{}image} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+             \PY{n}{X\PYZus{}train} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{n}{mean\PYZus{}image}
+             \PY{n}{X\PYZus{}val} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{n}{mean\PYZus{}image}
+             \PY{n}{X\PYZus{}test} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{n}{mean\PYZus{}image}
+         
+             \PY{c+c1}{\PYZsh{} Reshape data to rows}
+             \PY{n}{X\PYZus{}train} \PY{o}{=} \PY{n}{X\PYZus{}train}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{num\PYZus{}training}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+             \PY{n}{X\PYZus{}val} \PY{o}{=} \PY{n}{X\PYZus{}val}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{num\PYZus{}validation}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+             \PY{n}{X\PYZus{}test} \PY{o}{=} \PY{n}{X\PYZus{}test}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{num\PYZus{}test}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+         
+             \PY{k}{return} \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}val}\PY{p}{,} \PY{n}{y\PYZus{}val}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}
+         
+         
+         \PY{c+c1}{\PYZsh{} Invoke the above function to get our data.}
+         \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}val}\PY{p}{,} \PY{n}{y\PYZus{}val}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{get\PYZus{}CIFAR10\PYZus{}data}\PY{p}{(}\PY{p}{)}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train data shape: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{X\PYZus{}train}\PY{o}{.}\PY{n}{shape}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Train labels shape: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{o}{.}\PY{n}{shape}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation data shape: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{X\PYZus{}val}\PY{o}{.}\PY{n}{shape}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation labels shape: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y\PYZus{}val}\PY{o}{.}\PY{n}{shape}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Test data shape: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{o}{.}\PY{n}{shape}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Test labels shape: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Train data shape:  (49000L, 3072L)
+Train labels shape:  (49000L,)
+Validation data shape:  (1000L, 3072L)
+Validation labels shape:  (1000L,)
+Test data shape:  (1000L, 3072L)
+Test labels shape:  (1000L,)
+
+    \end{Verbatim}
+
+    \section{Train a network}\label{train-a-network}
+
+To train our network we will use SGD with momentum. In addition, we will
+adjust the learning rate with an exponential learning rate schedule as
+optimization proceeds; after each epoch, we will reduce the learning
+rate by multiplying it by a decay rate.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{k+kn}{from} \PY{n+nn}{cs231n.classifiers.neural\PYZus{}net} \PY{k+kn}{import} \PY{n}{init\PYZus{}two\PYZus{}layer\PYZus{}model}
+         
+         \PY{n}{model} \PY{o}{=} \PY{n}{init\PYZus{}two\PYZus{}layer\PYZus{}model}\PY{p}{(}\PY{l+m+mi}{32}\PY{o}{*}\PY{l+m+mi}{32}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)} \PY{c+c1}{\PYZsh{} input size, hidden size, number of classes}
+         \PY{n}{trainer} \PY{o}{=} \PY{n}{ClassifierTrainer}\PY{p}{(}\PY{p}{)}
+         \PY{n}{best\PYZus{}model}\PY{p}{,} \PY{n}{loss\PYZus{}history}\PY{p}{,} \PY{n}{train\PYZus{}acc}\PY{p}{,} \PY{n}{val\PYZus{}acc} \PY{o}{=} \PY{n}{trainer}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}val}\PY{p}{,} \PY{n}{y\PYZus{}val}\PY{p}{,}
+                                                      \PY{n}{model}\PY{p}{,} \PY{n}{two\PYZus{}layer\PYZus{}net}\PY{p}{,}
+                                                      \PY{n}{num\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{reg}\PY{o}{=}\PY{l+m+mf}{1.0}\PY{p}{,}
+                                                      \PY{n}{momentum}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{learning\PYZus{}rate\PYZus{}decay} \PY{o}{=} \PY{l+m+mf}{0.95}\PY{p}{,}
+                                                      \PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}5}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+starting iteration  0
+Finished epoch 0 / 5: cost 2.302593, train: 0.078000, val 0.072000, lr 1.000000e-05
+starting iteration  10
+starting iteration  20
+starting iteration  30
+starting iteration  40
+starting iteration  50
+starting iteration  60
+starting iteration  70
+starting iteration  80
+starting iteration  90
+starting iteration  100
+starting iteration  110
+starting iteration  120
+starting iteration  130
+starting iteration  140
+starting iteration  150
+starting iteration  160
+starting iteration  170
+starting iteration  180
+starting iteration  190
+starting iteration  200
+starting iteration  210
+starting iteration  220
+starting iteration  230
+starting iteration  240
+starting iteration  250
+starting iteration  260
+starting iteration  270
+starting iteration  280
+starting iteration  290
+starting iteration  300
+starting iteration  310
+starting iteration  320
+starting iteration  330
+starting iteration  340
+starting iteration  350
+starting iteration  360
+starting iteration  370
+starting iteration  380
+starting iteration  390
+starting iteration  400
+starting iteration  410
+starting iteration  420
+starting iteration  430
+starting iteration  440
+starting iteration  450
+starting iteration  460
+starting iteration  470
+starting iteration  480
+Finished epoch 1 / 5: cost 2.288314, train: 0.161000, val 0.177000, lr 9.500000e-06
+starting iteration  490
+starting iteration  500
+starting iteration  510
+starting iteration  520
+starting iteration  530
+starting iteration  540
+starting iteration  550
+starting iteration  560
+starting iteration  570
+starting iteration  580
+starting iteration  590
+starting iteration  600
+starting iteration  610
+starting iteration  620
+starting iteration  630
+starting iteration  640
+starting iteration  650
+starting iteration  660
+starting iteration  670
+starting iteration  680
+starting iteration  690
+starting iteration  700
+starting iteration  710
+starting iteration  720
+starting iteration  730
+starting iteration  740
+starting iteration  750
+starting iteration  760
+starting iteration  770
+starting iteration  780
+starting iteration  790
+starting iteration  800
+starting iteration  810
+starting iteration  820
+starting iteration  830
+starting iteration  840
+starting iteration  850
+starting iteration  860
+starting iteration  870
+starting iteration  880
+starting iteration  890
+starting iteration  900
+starting iteration  910
+starting iteration  920
+starting iteration  930
+starting iteration  940
+starting iteration  950
+starting iteration  960
+starting iteration  970
+Finished epoch 2 / 5: cost 2.098012, train: 0.264000, val 0.245000, lr 9.025000e-06
+starting iteration  980
+starting iteration  990
+starting iteration  1000
+starting iteration  1010
+starting iteration  1020
+starting iteration  1030
+starting iteration  1040
+starting iteration  1050
+starting iteration  1060
+starting iteration  1070
+starting iteration  1080
+starting iteration  1090
+starting iteration  1100
+starting iteration  1110
+starting iteration  1120
+starting iteration  1130
+starting iteration  1140
+starting iteration  1150
+starting iteration  1160
+starting iteration  1170
+starting iteration  1180
+starting iteration  1190
+starting iteration  1200
+starting iteration  1210
+starting iteration  1220
+starting iteration  1230
+starting iteration  1240
+starting iteration  1250
+starting iteration  1260
+starting iteration  1270
+starting iteration  1280
+starting iteration  1290
+starting iteration  1300
+starting iteration  1310
+starting iteration  1320
+starting iteration  1330
+starting iteration  1340
+starting iteration  1350
+starting iteration  1360
+starting iteration  1370
+starting iteration  1380
+starting iteration  1390
+starting iteration  1400
+starting iteration  1410
+starting iteration  1420
+starting iteration  1430
+starting iteration  1440
+starting iteration  1450
+starting iteration  1460
+Finished epoch 3 / 5: cost 1.948069, train: 0.313000, val 0.298000, lr 8.573750e-06
+starting iteration  1470
+starting iteration  1480
+starting iteration  1490
+starting iteration  1500
+starting iteration  1510
+starting iteration  1520
+starting iteration  1530
+starting iteration  1540
+starting iteration  1550
+starting iteration  1560
+starting iteration  1570
+starting iteration  1580
+starting iteration  1590
+starting iteration  1600
+starting iteration  1610
+starting iteration  1620
+starting iteration  1630
+starting iteration  1640
+starting iteration  1650
+starting iteration  1660
+starting iteration  1670
+starting iteration  1680
+starting iteration  1690
+starting iteration  1700
+starting iteration  1710
+starting iteration  1720
+starting iteration  1730
+starting iteration  1740
+starting iteration  1750
+starting iteration  1760
+starting iteration  1770
+starting iteration  1780
+starting iteration  1790
+starting iteration  1800
+starting iteration  1810
+starting iteration  1820
+starting iteration  1830
+starting iteration  1840
+starting iteration  1850
+starting iteration  1860
+starting iteration  1870
+starting iteration  1880
+starting iteration  1890
+starting iteration  1900
+starting iteration  1910
+starting iteration  1920
+starting iteration  1930
+starting iteration  1940
+starting iteration  1950
+Finished epoch 4 / 5: cost 1.862223, train: 0.342000, val 0.337000, lr 8.145063e-06
+starting iteration  1960
+starting iteration  1970
+starting iteration  1980
+starting iteration  1990
+starting iteration  2000
+starting iteration  2010
+starting iteration  2020
+starting iteration  2030
+starting iteration  2040
+starting iteration  2050
+starting iteration  2060
+starting iteration  2070
+starting iteration  2080
+starting iteration  2090
+starting iteration  2100
+starting iteration  2110
+starting iteration  2120
+starting iteration  2130
+starting iteration  2140
+starting iteration  2150
+starting iteration  2160
+starting iteration  2170
+starting iteration  2180
+starting iteration  2190
+starting iteration  2200
+starting iteration  2210
+starting iteration  2220
+starting iteration  2230
+starting iteration  2240
+starting iteration  2250
+starting iteration  2260
+starting iteration  2270
+starting iteration  2280
+starting iteration  2290
+starting iteration  2300
+starting iteration  2310
+starting iteration  2320
+starting iteration  2330
+starting iteration  2340
+starting iteration  2350
+starting iteration  2360
+starting iteration  2370
+starting iteration  2380
+starting iteration  2390
+starting iteration  2400
+starting iteration  2410
+starting iteration  2420
+starting iteration  2430
+starting iteration  2440
+Finished epoch 5 / 5: cost 1.701112, train: 0.343000, val 0.367000, lr 7.737809e-06
+finished optimization. best validation accuracy: 0.367000
+
+    \end{Verbatim}
+
+    \section{Debug the training}\label{debug-the-training}
+
+With the default parameters we provided above, you should get a
+validation accuracy of about 0.37 on the validation set. This isn't very
+good.
+
+One strategy for getting insight into what's wrong is to plot the loss
+function and the accuracies on the training and validation sets during
+optimization.
+
+Another strategy is to visualize the weights that were learned in the
+first layer of the network. In most neural networks trained on visual
+data, the first layer weights typically show some visible structure when
+visualized.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{c+c1}{\PYZsh{} Plot the loss function and train / validation accuracies}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{loss\PYZus{}history}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Loss history}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iteration}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{train\PYZus{}acc}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{val\PYZus{}acc}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Training accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lower right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Clasification accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}19}]:} <matplotlib.text.Text at 0x80eccc0>
+\end{Verbatim}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Q1_files/Q1_21_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{k+kn}{from} \PY{n+nn}{cs231n.vis\PYZus{}utils} \PY{k+kn}{import} \PY{n}{visualize\PYZus{}grid}
+         
+         \PY{c+c1}{\PYZsh{} Visualize the weights of the network}
+         
+         \PY{k}{def} \PY{n+nf}{show\PYZus{}net\PYZus{}weights}\PY{p}{(}\PY{n}{model}\PY{p}{)}\PY{p}{:}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{visualize\PYZus{}grid}\PY{p}{(}\PY{n}{model}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{32}\PY{p}{,} \PY{l+m+mi}{32}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{uint8}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{show\PYZus{}net\PYZus{}weights}\PY{p}{(}\PY{n}{model}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Q1_files/Q1_22_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \section{Tune your hyperparameters}\label{tune-your-hyperparameters}
+
+\textbf{What's wrong?}. Looking at the visualizations above, we see that
+the loss is decreasing more or less linearly, which seems to suggest
+that the learning rate may be too low. Moreover, there is no gap between
+the training and validation accuracy, suggesting that the model we used
+has low capacity, and that we should increase its size. On the other
+hand, with a very large model we would expect to see more overfitting,
+which would manifest itself as a very large gap between the training and
+validation accuracy.
+
+\textbf{Tuning}. Tuning the hyperparameters and developing intuition for
+how they affect the final performance is a large part of using Neural
+Networks, so we want you to get a lot of practice. Below, you should
+experiment with different values of the various hyperparameters,
+including hidden layer size, learning rate, numer of training epochs,
+and regularization strength. You might also consider tuning the momentum
+and learning rate decay parameters, but you should be able to get good
+performance using the default values.
+
+\textbf{Approximate results}. You should be aim to achieve a
+classification accuracy of greater than 50\% on the validation set. Our
+best network gets over 56\% on the validation set.
+
+\textbf{Experiment}: You goal in this exercise is to get as good of a
+result on CIFAR-10 as you can, with a fully-connected Neural Network.
+For every 1\% above 56\% on the Test set we will award you with one
+extra bonus point. Feel free implement your own techniques (e.g.~PCA to
+reduce dimensionality, or adding dropout, or adding features to the
+solver, etc.).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}66}]:} \PY{n}{best\PYZus{}model} \PY{o}{=} \PY{n+nb+bp}{None} \PY{c+c1}{\PYZsh{} store the best model into this }
+         
+         \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+         \PY{c+c1}{\PYZsh{} TODO: Tune hyperparameters using the validation set. Store your best trained  \PYZsh{}}
+         \PY{c+c1}{\PYZsh{} model in best\PYZus{}model.                                                          \PYZsh{}}
+         \PY{c+c1}{\PYZsh{}                                                                               \PYZsh{}}
+         \PY{c+c1}{\PYZsh{} To help debug your network, it may help to use visualizations similar to the  \PYZsh{}}
+         \PY{c+c1}{\PYZsh{} ones we used above; these visualizations will have significant qualitative    \PYZsh{}}
+         \PY{c+c1}{\PYZsh{} differences from the ones we saw above for the poorly tuned network.          \PYZsh{}}
+         \PY{c+c1}{\PYZsh{}                                                                               \PYZsh{}}
+         \PY{c+c1}{\PYZsh{} Tweaking hyperparameters by hand can be fun, but you might find it useful to  \PYZsh{}}
+         \PY{c+c1}{\PYZsh{} write code to sweep through possible combinations of hyperparameters          \PYZsh{}}
+         \PY{c+c1}{\PYZsh{} automatically like we did on the previous assignment.                         \PYZsh{}}
+         \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+         \PY{n}{model} \PY{o}{=} \PY{n}{init\PYZus{}two\PYZus{}layer\PYZus{}model}\PY{p}{(}\PY{l+m+mi}{32}\PY{o}{*}\PY{l+m+mi}{32}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)} \PY{c+c1}{\PYZsh{} input size, hidden size, number of classes}
+         \PY{n}{trainer} \PY{o}{=} \PY{n}{ClassifierTrainer}\PY{p}{(}\PY{p}{)}
+         \PY{n}{best\PYZus{}model}\PY{p}{,} \PY{n}{loss\PYZus{}history}\PY{p}{,} \PY{n}{train\PYZus{}acc}\PY{p}{,} \PY{n}{val\PYZus{}acc} \PY{o}{=} \PY{n}{trainer}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}val}\PY{p}{,} \PY{n}{y\PYZus{}val}\PY{p}{,}
+                                                      \PY{n}{model}\PY{p}{,} \PY{n}{two\PYZus{}layer\PYZus{}net}\PY{p}{,}
+                                                      \PY{n}{num\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{28}\PY{p}{,} \PY{n}{reg}\PY{o}{=}\PY{l+m+mf}{1.1}\PY{p}{,}
+                                                      \PY{n}{momentum}\PY{o}{=}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{n}{learning\PYZus{}rate\PYZus{}decay} \PY{o}{=} \PY{l+m+mf}{0.9}\PY{p}{,}
+                                                      \PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+m+mf}{1.5e\PYZhy{}4}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+         \PY{c+c1}{\PYZsh{}                               END OF YOUR CODE                                \PYZsh{}}
+         \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+starting iteration  0
+Finished epoch 0 / 28: cost 2.302593, train: 0.113000, val 0.100000, lr 1.500000e-04
+starting iteration  10
+starting iteration  20
+starting iteration  30
+starting iteration  40
+starting iteration  50
+starting iteration  60
+starting iteration  70
+starting iteration  80
+starting iteration  90
+starting iteration  100
+starting iteration  110
+starting iteration  120
+starting iteration  130
+starting iteration  140
+starting iteration  150
+starting iteration  160
+starting iteration  170
+starting iteration  180
+starting iteration  190
+starting iteration  200
+starting iteration  210
+starting iteration  220
+starting iteration  230
+starting iteration  240
+starting iteration  250
+starting iteration  260
+starting iteration  270
+starting iteration  280
+starting iteration  290
+starting iteration  300
+starting iteration  310
+starting iteration  320
+starting iteration  330
+starting iteration  340
+starting iteration  350
+starting iteration  360
+starting iteration  370
+starting iteration  380
+starting iteration  390
+starting iteration  400
+starting iteration  410
+starting iteration  420
+starting iteration  430
+starting iteration  440
+starting iteration  450
+starting iteration  460
+starting iteration  470
+starting iteration  480
+Finished epoch 1 / 28: cost 1.580177, train: 0.447000, val 0.420000, lr 1.350000e-04
+starting iteration  490
+starting iteration  500
+starting iteration  510
+starting iteration  520
+starting iteration  530
+starting iteration  540
+starting iteration  550
+starting iteration  560
+starting iteration  570
+starting iteration  580
+starting iteration  590
+starting iteration  600
+starting iteration  610
+starting iteration  620
+starting iteration  630
+starting iteration  640
+starting iteration  650
+starting iteration  660
+starting iteration  670
+starting iteration  680
+starting iteration  690
+starting iteration  700
+starting iteration  710
+starting iteration  720
+starting iteration  730
+starting iteration  740
+starting iteration  750
+starting iteration  760
+starting iteration  770
+starting iteration  780
+starting iteration  790
+starting iteration  800
+starting iteration  810
+starting iteration  820
+starting iteration  830
+starting iteration  840
+starting iteration  850
+starting iteration  860
+starting iteration  870
+starting iteration  880
+starting iteration  890
+starting iteration  900
+starting iteration  910
+starting iteration  920
+starting iteration  930
+starting iteration  940
+starting iteration  950
+starting iteration  960
+starting iteration  970
+Finished epoch 2 / 28: cost 1.780223, train: 0.469000, val 0.452000, lr 1.215000e-04
+starting iteration  980
+starting iteration  990
+starting iteration  1000
+starting iteration  1010
+starting iteration  1020
+starting iteration  1030
+starting iteration  1040
+starting iteration  1050
+starting iteration  1060
+starting iteration  1070
+starting iteration  1080
+starting iteration  1090
+starting iteration  1100
+starting iteration  1110
+starting iteration  1120
+starting iteration  1130
+starting iteration  1140
+starting iteration  1150
+starting iteration  1160
+starting iteration  1170
+starting iteration  1180
+starting iteration  1190
+starting iteration  1200
+starting iteration  1210
+starting iteration  1220
+starting iteration  1230
+starting iteration  1240
+starting iteration  1250
+starting iteration  1260
+starting iteration  1270
+starting iteration  1280
+starting iteration  1290
+starting iteration  1300
+starting iteration  1310
+starting iteration  1320
+starting iteration  1330
+starting iteration  1340
+starting iteration  1350
+starting iteration  1360
+starting iteration  1370
+starting iteration  1380
+starting iteration  1390
+starting iteration  1400
+starting iteration  1410
+starting iteration  1420
+starting iteration  1430
+starting iteration  1440
+starting iteration  1450
+starting iteration  1460
+Finished epoch 3 / 28: cost 1.824917, train: 0.476000, val 0.461000, lr 1.093500e-04
+starting iteration  1470
+starting iteration  1480
+starting iteration  1490
+starting iteration  1500
+starting iteration  1510
+starting iteration  1520
+starting iteration  1530
+starting iteration  1540
+starting iteration  1550
+starting iteration  1560
+starting iteration  1570
+starting iteration  1580
+starting iteration  1590
+starting iteration  1600
+starting iteration  1610
+starting iteration  1620
+starting iteration  1630
+starting iteration  1640
+starting iteration  1650
+starting iteration  1660
+starting iteration  1670
+starting iteration  1680
+starting iteration  1690
+starting iteration  1700
+starting iteration  1710
+starting iteration  1720
+starting iteration  1730
+starting iteration  1740
+starting iteration  1750
+starting iteration  1760
+starting iteration  1770
+starting iteration  1780
+starting iteration  1790
+starting iteration  1800
+starting iteration  1810
+starting iteration  1820
+starting iteration  1830
+starting iteration  1840
+starting iteration  1850
+starting iteration  1860
+starting iteration  1870
+starting iteration  1880
+starting iteration  1890
+starting iteration  1900
+starting iteration  1910
+starting iteration  1920
+starting iteration  1930
+starting iteration  1940
+starting iteration  1950
+Finished epoch 4 / 28: cost 1.774068, train: 0.491000, val 0.449000, lr 9.841500e-05
+starting iteration  1960
+starting iteration  1970
+starting iteration  1980
+starting iteration  1990
+starting iteration  2000
+starting iteration  2010
+starting iteration  2020
+starting iteration  2030
+starting iteration  2040
+starting iteration  2050
+starting iteration  2060
+starting iteration  2070
+starting iteration  2080
+starting iteration  2090
+starting iteration  2100
+starting iteration  2110
+starting iteration  2120
+starting iteration  2130
+starting iteration  2140
+starting iteration  2150
+starting iteration  2160
+starting iteration  2170
+starting iteration  2180
+starting iteration  2190
+starting iteration  2200
+starting iteration  2210
+starting iteration  2220
+starting iteration  2230
+starting iteration  2240
+starting iteration  2250
+starting iteration  2260
+starting iteration  2270
+starting iteration  2280
+starting iteration  2290
+starting iteration  2300
+starting iteration  2310
+starting iteration  2320
+starting iteration  2330
+starting iteration  2340
+starting iteration  2350
+starting iteration  2360
+starting iteration  2370
+starting iteration  2380
+starting iteration  2390
+starting iteration  2400
+starting iteration  2410
+starting iteration  2420
+starting iteration  2430
+starting iteration  2440
+Finished epoch 5 / 28: cost 1.826170, train: 0.485000, val 0.465000, lr 8.857350e-05
+starting iteration  2450
+starting iteration  2460
+starting iteration  2470
+starting iteration  2480
+starting iteration  2490
+starting iteration  2500
+starting iteration  2510
+starting iteration  2520
+starting iteration  2530
+starting iteration  2540
+starting iteration  2550
+starting iteration  2560
+starting iteration  2570
+starting iteration  2580
+starting iteration  2590
+starting iteration  2600
+starting iteration  2610
+starting iteration  2620
+starting iteration  2630
+starting iteration  2640
+starting iteration  2650
+starting iteration  2660
+starting iteration  2670
+starting iteration  2680
+starting iteration  2690
+starting iteration  2700
+starting iteration  2710
+starting iteration  2720
+starting iteration  2730
+starting iteration  2740
+starting iteration  2750
+starting iteration  2760
+starting iteration  2770
+starting iteration  2780
+starting iteration  2790
+starting iteration  2800
+starting iteration  2810
+starting iteration  2820
+starting iteration  2830
+starting iteration  2840
+starting iteration  2850
+starting iteration  2860
+starting iteration  2870
+starting iteration  2880
+starting iteration  2890
+starting iteration  2900
+starting iteration  2910
+starting iteration  2920
+starting iteration  2930
+Finished epoch 6 / 28: cost 1.667484, train: 0.508000, val 0.488000, lr 7.971615e-05
+starting iteration  2940
+starting iteration  2950
+starting iteration  2960
+starting iteration  2970
+starting iteration  2980
+starting iteration  2990
+starting iteration  3000
+starting iteration  3010
+starting iteration  3020
+starting iteration  3030
+starting iteration  3040
+starting iteration  3050
+starting iteration  3060
+starting iteration  3070
+starting iteration  3080
+starting iteration  3090
+starting iteration  3100
+starting iteration  3110
+starting iteration  3120
+starting iteration  3130
+starting iteration  3140
+starting iteration  3150
+starting iteration  3160
+starting iteration  3170
+starting iteration  3180
+starting iteration  3190
+starting iteration  3200
+starting iteration  3210
+starting iteration  3220
+starting iteration  3230
+starting iteration  3240
+starting iteration  3250
+starting iteration  3260
+starting iteration  3270
+starting iteration  3280
+starting iteration  3290
+starting iteration  3300
+starting iteration  3310
+starting iteration  3320
+starting iteration  3330
+starting iteration  3340
+starting iteration  3350
+starting iteration  3360
+starting iteration  3370
+starting iteration  3380
+starting iteration  3390
+starting iteration  3400
+starting iteration  3410
+starting iteration  3420
+Finished epoch 7 / 28: cost 1.393923, train: 0.478000, val 0.481000, lr 7.174453e-05
+starting iteration  3430
+starting iteration  3440
+starting iteration  3450
+starting iteration  3460
+starting iteration  3470
+starting iteration  3480
+starting iteration  3490
+starting iteration  3500
+starting iteration  3510
+starting iteration  3520
+starting iteration  3530
+starting iteration  3540
+starting iteration  3550
+starting iteration  3560
+starting iteration  3570
+starting iteration  3580
+starting iteration  3590
+starting iteration  3600
+starting iteration  3610
+starting iteration  3620
+starting iteration  3630
+starting iteration  3640
+starting iteration  3650
+starting iteration  3660
+starting iteration  3670
+starting iteration  3680
+starting iteration  3690
+starting iteration  3700
+starting iteration  3710
+starting iteration  3720
+starting iteration  3730
+starting iteration  3740
+starting iteration  3750
+starting iteration  3760
+starting iteration  3770
+starting iteration  3780
+starting iteration  3790
+starting iteration  3800
+starting iteration  3810
+starting iteration  3820
+starting iteration  3830
+starting iteration  3840
+starting iteration  3850
+starting iteration  3860
+starting iteration  3870
+starting iteration  3880
+starting iteration  3890
+starting iteration  3900
+starting iteration  3910
+Finished epoch 8 / 28: cost 1.638118, train: 0.506000, val 0.493000, lr 6.457008e-05
+starting iteration  3920
+starting iteration  3930
+starting iteration  3940
+starting iteration  3950
+starting iteration  3960
+starting iteration  3970
+starting iteration  3980
+starting iteration  3990
+starting iteration  4000
+starting iteration  4010
+starting iteration  4020
+starting iteration  4030
+starting iteration  4040
+starting iteration  4050
+starting iteration  4060
+starting iteration  4070
+starting iteration  4080
+starting iteration  4090
+starting iteration  4100
+starting iteration  4110
+starting iteration  4120
+starting iteration  4130
+starting iteration  4140
+starting iteration  4150
+starting iteration  4160
+starting iteration  4170
+starting iteration  4180
+starting iteration  4190
+starting iteration  4200
+starting iteration  4210
+starting iteration  4220
+starting iteration  4230
+starting iteration  4240
+starting iteration  4250
+starting iteration  4260
+starting iteration  4270
+starting iteration  4280
+starting iteration  4290
+starting iteration  4300
+starting iteration  4310
+starting iteration  4320
+starting iteration  4330
+starting iteration  4340
+starting iteration  4350
+starting iteration  4360
+starting iteration  4370
+starting iteration  4380
+starting iteration  4390
+starting iteration  4400
+Finished epoch 9 / 28: cost 1.621459, train: 0.520000, val 0.497000, lr 5.811307e-05
+starting iteration  4410
+starting iteration  4420
+starting iteration  4430
+starting iteration  4440
+starting iteration  4450
+starting iteration  4460
+starting iteration  4470
+starting iteration  4480
+starting iteration  4490
+starting iteration  4500
+starting iteration  4510
+starting iteration  4520
+starting iteration  4530
+starting iteration  4540
+starting iteration  4550
+starting iteration  4560
+starting iteration  4570
+starting iteration  4580
+starting iteration  4590
+starting iteration  4600
+starting iteration  4610
+starting iteration  4620
+starting iteration  4630
+starting iteration  4640
+starting iteration  4650
+starting iteration  4660
+starting iteration  4670
+starting iteration  4680
+starting iteration  4690
+starting iteration  4700
+starting iteration  4710
+starting iteration  4720
+starting iteration  4730
+starting iteration  4740
+starting iteration  4750
+starting iteration  4760
+starting iteration  4770
+starting iteration  4780
+starting iteration  4790
+starting iteration  4800
+starting iteration  4810
+starting iteration  4820
+starting iteration  4830
+starting iteration  4840
+starting iteration  4850
+starting iteration  4860
+starting iteration  4870
+starting iteration  4880
+starting iteration  4890
+Finished epoch 10 / 28: cost 1.510799, train: 0.511000, val 0.493000, lr 5.230177e-05
+starting iteration  4900
+starting iteration  4910
+starting iteration  4920
+starting iteration  4930
+starting iteration  4940
+starting iteration  4950
+starting iteration  4960
+starting iteration  4970
+starting iteration  4980
+starting iteration  4990
+starting iteration  5000
+starting iteration  5010
+starting iteration  5020
+starting iteration  5030
+starting iteration  5040
+starting iteration  5050
+starting iteration  5060
+starting iteration  5070
+starting iteration  5080
+starting iteration  5090
+starting iteration  5100
+starting iteration  5110
+starting iteration  5120
+starting iteration  5130
+starting iteration  5140
+starting iteration  5150
+starting iteration  5160
+starting iteration  5170
+starting iteration  5180
+starting iteration  5190
+starting iteration  5200
+starting iteration  5210
+starting iteration  5220
+starting iteration  5230
+starting iteration  5240
+starting iteration  5250
+starting iteration  5260
+starting iteration  5270
+starting iteration  5280
+starting iteration  5290
+starting iteration  5300
+starting iteration  5310
+starting iteration  5320
+starting iteration  5330
+starting iteration  5340
+starting iteration  5350
+starting iteration  5360
+starting iteration  5370
+starting iteration  5380
+Finished epoch 11 / 28: cost 1.511887, train: 0.521000, val 0.492000, lr 4.707159e-05
+starting iteration  5390
+starting iteration  5400
+starting iteration  5410
+starting iteration  5420
+starting iteration  5430
+starting iteration  5440
+starting iteration  5450
+starting iteration  5460
+starting iteration  5470
+starting iteration  5480
+starting iteration  5490
+starting iteration  5500
+starting iteration  5510
+starting iteration  5520
+starting iteration  5530
+starting iteration  5540
+starting iteration  5550
+starting iteration  5560
+starting iteration  5570
+starting iteration  5580
+starting iteration  5590
+starting iteration  5600
+starting iteration  5610
+starting iteration  5620
+starting iteration  5630
+starting iteration  5640
+starting iteration  5650
+starting iteration  5660
+starting iteration  5670
+starting iteration  5680
+starting iteration  5690
+starting iteration  5700
+starting iteration  5710
+starting iteration  5720
+starting iteration  5730
+starting iteration  5740
+starting iteration  5750
+starting iteration  5760
+starting iteration  5770
+starting iteration  5780
+starting iteration  5790
+starting iteration  5800
+starting iteration  5810
+starting iteration  5820
+starting iteration  5830
+starting iteration  5840
+starting iteration  5850
+starting iteration  5860
+starting iteration  5870
+Finished epoch 12 / 28: cost 1.623313, train: 0.547000, val 0.506000, lr 4.236443e-05
+starting iteration  5880
+starting iteration  5890
+starting iteration  5900
+starting iteration  5910
+starting iteration  5920
+starting iteration  5930
+starting iteration  5940
+starting iteration  5950
+starting iteration  5960
+starting iteration  5970
+starting iteration  5980
+starting iteration  5990
+starting iteration  6000
+starting iteration  6010
+starting iteration  6020
+starting iteration  6030
+starting iteration  6040
+starting iteration  6050
+starting iteration  6060
+starting iteration  6070
+starting iteration  6080
+starting iteration  6090
+starting iteration  6100
+starting iteration  6110
+starting iteration  6120
+starting iteration  6130
+starting iteration  6140
+starting iteration  6150
+starting iteration  6160
+starting iteration  6170
+starting iteration  6180
+starting iteration  6190
+starting iteration  6200
+starting iteration  6210
+starting iteration  6220
+starting iteration  6230
+starting iteration  6240
+starting iteration  6250
+starting iteration  6260
+starting iteration  6270
+starting iteration  6280
+starting iteration  6290
+starting iteration  6300
+starting iteration  6310
+starting iteration  6320
+starting iteration  6330
+starting iteration  6340
+starting iteration  6350
+starting iteration  6360
+Finished epoch 13 / 28: cost 1.601677, train: 0.536000, val 0.503000, lr 3.812799e-05
+starting iteration  6370
+starting iteration  6380
+starting iteration  6390
+starting iteration  6400
+starting iteration  6410
+starting iteration  6420
+starting iteration  6430
+starting iteration  6440
+starting iteration  6450
+starting iteration  6460
+starting iteration  6470
+starting iteration  6480
+starting iteration  6490
+starting iteration  6500
+starting iteration  6510
+starting iteration  6520
+starting iteration  6530
+starting iteration  6540
+starting iteration  6550
+starting iteration  6560
+starting iteration  6570
+starting iteration  6580
+starting iteration  6590
+starting iteration  6600
+starting iteration  6610
+starting iteration  6620
+starting iteration  6630
+starting iteration  6640
+starting iteration  6650
+starting iteration  6660
+starting iteration  6670
+starting iteration  6680
+starting iteration  6690
+starting iteration  6700
+starting iteration  6710
+starting iteration  6720
+starting iteration  6730
+starting iteration  6740
+starting iteration  6750
+starting iteration  6760
+starting iteration  6770
+starting iteration  6780
+starting iteration  6790
+starting iteration  6800
+starting iteration  6810
+starting iteration  6820
+starting iteration  6830
+starting iteration  6840
+starting iteration  6850
+Finished epoch 14 / 28: cost 1.623268, train: 0.539000, val 0.511000, lr 3.431519e-05
+starting iteration  6860
+starting iteration  6870
+starting iteration  6880
+starting iteration  6890
+starting iteration  6900
+starting iteration  6910
+starting iteration  6920
+starting iteration  6930
+starting iteration  6940
+starting iteration  6950
+starting iteration  6960
+starting iteration  6970
+starting iteration  6980
+starting iteration  6990
+starting iteration  7000
+starting iteration  7010
+starting iteration  7020
+starting iteration  7030
+starting iteration  7040
+starting iteration  7050
+starting iteration  7060
+starting iteration  7070
+starting iteration  7080
+starting iteration  7090
+starting iteration  7100
+starting iteration  7110
+starting iteration  7120
+starting iteration  7130
+starting iteration  7140
+starting iteration  7150
+starting iteration  7160
+starting iteration  7170
+starting iteration  7180
+starting iteration  7190
+starting iteration  7200
+starting iteration  7210
+starting iteration  7220
+starting iteration  7230
+starting iteration  7240
+starting iteration  7250
+starting iteration  7260
+starting iteration  7270
+starting iteration  7280
+starting iteration  7290
+starting iteration  7300
+starting iteration  7310
+starting iteration  7320
+starting iteration  7330
+starting iteration  7340
+Finished epoch 15 / 28: cost 1.421311, train: 0.528000, val 0.494000, lr 3.088367e-05
+starting iteration  7350
+starting iteration  7360
+starting iteration  7370
+starting iteration  7380
+starting iteration  7390
+starting iteration  7400
+starting iteration  7410
+starting iteration  7420
+starting iteration  7430
+starting iteration  7440
+starting iteration  7450
+starting iteration  7460
+starting iteration  7470
+starting iteration  7480
+starting iteration  7490
+starting iteration  7500
+starting iteration  7510
+starting iteration  7520
+starting iteration  7530
+starting iteration  7540
+starting iteration  7550
+starting iteration  7560
+starting iteration  7570
+starting iteration  7580
+starting iteration  7590
+starting iteration  7600
+starting iteration  7610
+starting iteration  7620
+starting iteration  7630
+starting iteration  7640
+starting iteration  7650
+starting iteration  7660
+starting iteration  7670
+starting iteration  7680
+starting iteration  7690
+starting iteration  7700
+starting iteration  7710
+starting iteration  7720
+starting iteration  7730
+starting iteration  7740
+starting iteration  7750
+starting iteration  7760
+starting iteration  7770
+starting iteration  7780
+starting iteration  7790
+starting iteration  7800
+starting iteration  7810
+starting iteration  7820
+starting iteration  7830
+Finished epoch 16 / 28: cost 1.560554, train: 0.557000, val 0.510000, lr 2.779530e-05
+starting iteration  7840
+starting iteration  7850
+starting iteration  7860
+starting iteration  7870
+starting iteration  7880
+starting iteration  7890
+starting iteration  7900
+starting iteration  7910
+starting iteration  7920
+starting iteration  7930
+starting iteration  7940
+starting iteration  7950
+starting iteration  7960
+starting iteration  7970
+starting iteration  7980
+starting iteration  7990
+starting iteration  8000
+starting iteration  8010
+starting iteration  8020
+starting iteration  8030
+starting iteration  8040
+starting iteration  8050
+starting iteration  8060
+starting iteration  8070
+starting iteration  8080
+starting iteration  8090
+starting iteration  8100
+starting iteration  8110
+starting iteration  8120
+starting iteration  8130
+starting iteration  8140
+starting iteration  8150
+starting iteration  8160
+starting iteration  8170
+starting iteration  8180
+starting iteration  8190
+starting iteration  8200
+starting iteration  8210
+starting iteration  8220
+starting iteration  8230
+starting iteration  8240
+starting iteration  8250
+starting iteration  8260
+starting iteration  8270
+starting iteration  8280
+starting iteration  8290
+starting iteration  8300
+starting iteration  8310
+starting iteration  8320
+Finished epoch 17 / 28: cost 1.511056, train: 0.555000, val 0.504000, lr 2.501577e-05
+starting iteration  8330
+starting iteration  8340
+starting iteration  8350
+starting iteration  8360
+starting iteration  8370
+starting iteration  8380
+starting iteration  8390
+starting iteration  8400
+starting iteration  8410
+starting iteration  8420
+starting iteration  8430
+starting iteration  8440
+starting iteration  8450
+starting iteration  8460
+starting iteration  8470
+starting iteration  8480
+starting iteration  8490
+starting iteration  8500
+starting iteration  8510
+starting iteration  8520
+starting iteration  8530
+starting iteration  8540
+starting iteration  8550
+starting iteration  8560
+starting iteration  8570
+starting iteration  8580
+starting iteration  8590
+starting iteration  8600
+starting iteration  8610
+starting iteration  8620
+starting iteration  8630
+starting iteration  8640
+starting iteration  8650
+starting iteration  8660
+starting iteration  8670
+starting iteration  8680
+starting iteration  8690
+starting iteration  8700
+starting iteration  8710
+starting iteration  8720
+starting iteration  8730
+starting iteration  8740
+starting iteration  8750
+starting iteration  8760
+starting iteration  8770
+starting iteration  8780
+starting iteration  8790
+starting iteration  8800
+starting iteration  8810
+Finished epoch 18 / 28: cost 1.428990, train: 0.523000, val 0.512000, lr 2.251420e-05
+starting iteration  8820
+starting iteration  8830
+starting iteration  8840
+starting iteration  8850
+starting iteration  8860
+starting iteration  8870
+starting iteration  8880
+starting iteration  8890
+starting iteration  8900
+starting iteration  8910
+starting iteration  8920
+starting iteration  8930
+starting iteration  8940
+starting iteration  8950
+starting iteration  8960
+starting iteration  8970
+starting iteration  8980
+starting iteration  8990
+starting iteration  9000
+starting iteration  9010
+starting iteration  9020
+starting iteration  9030
+starting iteration  9040
+starting iteration  9050
+starting iteration  9060
+starting iteration  9070
+starting iteration  9080
+starting iteration  9090
+starting iteration  9100
+starting iteration  9110
+starting iteration  9120
+starting iteration  9130
+starting iteration  9140
+starting iteration  9150
+starting iteration  9160
+starting iteration  9170
+starting iteration  9180
+starting iteration  9190
+starting iteration  9200
+starting iteration  9210
+starting iteration  9220
+starting iteration  9230
+starting iteration  9240
+starting iteration  9250
+starting iteration  9260
+starting iteration  9270
+starting iteration  9280
+starting iteration  9290
+starting iteration  9300
+Finished epoch 19 / 28: cost 1.434726, train: 0.550000, val 0.513000, lr 2.026278e-05
+starting iteration  9310
+starting iteration  9320
+starting iteration  9330
+starting iteration  9340
+starting iteration  9350
+starting iteration  9360
+starting iteration  9370
+starting iteration  9380
+starting iteration  9390
+starting iteration  9400
+starting iteration  9410
+starting iteration  9420
+starting iteration  9430
+starting iteration  9440
+starting iteration  9450
+starting iteration  9460
+starting iteration  9470
+starting iteration  9480
+starting iteration  9490
+starting iteration  9500
+starting iteration  9510
+starting iteration  9520
+starting iteration  9530
+starting iteration  9540
+starting iteration  9550
+starting iteration  9560
+starting iteration  9570
+starting iteration  9580
+starting iteration  9590
+starting iteration  9600
+starting iteration  9610
+starting iteration  9620
+starting iteration  9630
+starting iteration  9640
+starting iteration  9650
+starting iteration  9660
+starting iteration  9670
+starting iteration  9680
+starting iteration  9690
+starting iteration  9700
+starting iteration  9710
+starting iteration  9720
+starting iteration  9730
+starting iteration  9740
+starting iteration  9750
+starting iteration  9760
+starting iteration  9770
+starting iteration  9780
+starting iteration  9790
+Finished epoch 20 / 28: cost 1.494886, train: 0.537000, val 0.522000, lr 1.823650e-05
+starting iteration  9800
+starting iteration  9810
+starting iteration  9820
+starting iteration  9830
+starting iteration  9840
+starting iteration  9850
+starting iteration  9860
+starting iteration  9870
+starting iteration  9880
+starting iteration  9890
+starting iteration  9900
+starting iteration  9910
+starting iteration  9920
+starting iteration  9930
+starting iteration  9940
+starting iteration  9950
+starting iteration  9960
+starting iteration  9970
+starting iteration  9980
+starting iteration  9990
+starting iteration  10000
+starting iteration  10010
+starting iteration  10020
+starting iteration  10030
+starting iteration  10040
+starting iteration  10050
+starting iteration  10060
+starting iteration  10070
+starting iteration  10080
+starting iteration  10090
+starting iteration  10100
+starting iteration  10110
+starting iteration  10120
+starting iteration  10130
+starting iteration  10140
+starting iteration  10150
+starting iteration  10160
+starting iteration  10170
+starting iteration  10180
+starting iteration  10190
+starting iteration  10200
+starting iteration  10210
+starting iteration  10220
+starting iteration  10230
+starting iteration  10240
+starting iteration  10250
+starting iteration  10260
+starting iteration  10270
+starting iteration  10280
+Finished epoch 21 / 28: cost 1.456008, train: 0.579000, val 0.505000, lr 1.641285e-05
+starting iteration  10290
+starting iteration  10300
+starting iteration  10310
+starting iteration  10320
+starting iteration  10330
+starting iteration  10340
+starting iteration  10350
+starting iteration  10360
+starting iteration  10370
+starting iteration  10380
+starting iteration  10390
+starting iteration  10400
+starting iteration  10410
+starting iteration  10420
+starting iteration  10430
+starting iteration  10440
+starting iteration  10450
+starting iteration  10460
+starting iteration  10470
+starting iteration  10480
+starting iteration  10490
+starting iteration  10500
+starting iteration  10510
+starting iteration  10520
+starting iteration  10530
+starting iteration  10540
+starting iteration  10550
+starting iteration  10560
+starting iteration  10570
+starting iteration  10580
+starting iteration  10590
+starting iteration  10600
+starting iteration  10610
+starting iteration  10620
+starting iteration  10630
+starting iteration  10640
+starting iteration  10650
+starting iteration  10660
+starting iteration  10670
+starting iteration  10680
+starting iteration  10690
+starting iteration  10700
+starting iteration  10710
+starting iteration  10720
+starting iteration  10730
+starting iteration  10740
+starting iteration  10750
+starting iteration  10760
+starting iteration  10770
+Finished epoch 22 / 28: cost 1.557188, train: 0.558000, val 0.524000, lr 1.477156e-05
+starting iteration  10780
+starting iteration  10790
+starting iteration  10800
+starting iteration  10810
+starting iteration  10820
+starting iteration  10830
+starting iteration  10840
+starting iteration  10850
+starting iteration  10860
+starting iteration  10870
+starting iteration  10880
+starting iteration  10890
+starting iteration  10900
+starting iteration  10910
+starting iteration  10920
+starting iteration  10930
+starting iteration  10940
+starting iteration  10950
+starting iteration  10960
+starting iteration  10970
+starting iteration  10980
+starting iteration  10990
+starting iteration  11000
+starting iteration  11010
+starting iteration  11020
+starting iteration  11030
+starting iteration  11040
+starting iteration  11050
+starting iteration  11060
+starting iteration  11070
+starting iteration  11080
+starting iteration  11090
+starting iteration  11100
+starting iteration  11110
+starting iteration  11120
+starting iteration  11130
+starting iteration  11140
+starting iteration  11150
+starting iteration  11160
+starting iteration  11170
+starting iteration  11180
+starting iteration  11190
+starting iteration  11200
+starting iteration  11210
+starting iteration  11220
+starting iteration  11230
+starting iteration  11240
+starting iteration  11250
+starting iteration  11260
+Finished epoch 23 / 28: cost 1.485863, train: 0.561000, val 0.519000, lr 1.329441e-05
+starting iteration  11270
+starting iteration  11280
+starting iteration  11290
+starting iteration  11300
+starting iteration  11310
+starting iteration  11320
+starting iteration  11330
+starting iteration  11340
+starting iteration  11350
+starting iteration  11360
+starting iteration  11370
+starting iteration  11380
+starting iteration  11390
+starting iteration  11400
+starting iteration  11410
+starting iteration  11420
+starting iteration  11430
+starting iteration  11440
+starting iteration  11450
+starting iteration  11460
+starting iteration  11470
+starting iteration  11480
+starting iteration  11490
+starting iteration  11500
+starting iteration  11510
+starting iteration  11520
+starting iteration  11530
+starting iteration  11540
+starting iteration  11550
+starting iteration  11560
+starting iteration  11570
+starting iteration  11580
+starting iteration  11590
+starting iteration  11600
+starting iteration  11610
+starting iteration  11620
+starting iteration  11630
+starting iteration  11640
+starting iteration  11650
+starting iteration  11660
+starting iteration  11670
+starting iteration  11680
+starting iteration  11690
+starting iteration  11700
+starting iteration  11710
+starting iteration  11720
+starting iteration  11730
+starting iteration  11740
+starting iteration  11750
+Finished epoch 24 / 28: cost 1.357398, train: 0.545000, val 0.508000, lr 1.196497e-05
+starting iteration  11760
+starting iteration  11770
+starting iteration  11780
+starting iteration  11790
+starting iteration  11800
+starting iteration  11810
+starting iteration  11820
+starting iteration  11830
+starting iteration  11840
+starting iteration  11850
+starting iteration  11860
+starting iteration  11870
+starting iteration  11880
+starting iteration  11890
+starting iteration  11900
+starting iteration  11910
+starting iteration  11920
+starting iteration  11930
+starting iteration  11940
+starting iteration  11950
+starting iteration  11960
+starting iteration  11970
+starting iteration  11980
+starting iteration  11990
+starting iteration  12000
+starting iteration  12010
+starting iteration  12020
+starting iteration  12030
+starting iteration  12040
+starting iteration  12050
+starting iteration  12060
+starting iteration  12070
+starting iteration  12080
+starting iteration  12090
+starting iteration  12100
+starting iteration  12110
+starting iteration  12120
+starting iteration  12130
+starting iteration  12140
+starting iteration  12150
+starting iteration  12160
+starting iteration  12170
+starting iteration  12180
+starting iteration  12190
+starting iteration  12200
+starting iteration  12210
+starting iteration  12220
+starting iteration  12230
+starting iteration  12240
+Finished epoch 25 / 28: cost 1.380623, train: 0.574000, val 0.525000, lr 1.076847e-05
+starting iteration  12250
+starting iteration  12260
+starting iteration  12270
+starting iteration  12280
+starting iteration  12290
+starting iteration  12300
+starting iteration  12310
+starting iteration  12320
+starting iteration  12330
+starting iteration  12340
+starting iteration  12350
+starting iteration  12360
+starting iteration  12370
+starting iteration  12380
+starting iteration  12390
+starting iteration  12400
+starting iteration  12410
+starting iteration  12420
+starting iteration  12430
+starting iteration  12440
+starting iteration  12450
+starting iteration  12460
+starting iteration  12470
+starting iteration  12480
+starting iteration  12490
+starting iteration  12500
+starting iteration  12510
+starting iteration  12520
+starting iteration  12530
+starting iteration  12540
+starting iteration  12550
+starting iteration  12560
+starting iteration  12570
+starting iteration  12580
+starting iteration  12590
+starting iteration  12600
+starting iteration  12610
+starting iteration  12620
+starting iteration  12630
+starting iteration  12640
+starting iteration  12650
+starting iteration  12660
+starting iteration  12670
+starting iteration  12680
+starting iteration  12690
+starting iteration  12700
+starting iteration  12710
+starting iteration  12720
+starting iteration  12730
+Finished epoch 26 / 28: cost 1.298217, train: 0.559000, val 0.521000, lr 9.691623e-06
+starting iteration  12740
+starting iteration  12750
+starting iteration  12760
+starting iteration  12770
+starting iteration  12780
+starting iteration  12790
+starting iteration  12800
+starting iteration  12810
+starting iteration  12820
+starting iteration  12830
+starting iteration  12840
+starting iteration  12850
+starting iteration  12860
+starting iteration  12870
+starting iteration  12880
+starting iteration  12890
+starting iteration  12900
+starting iteration  12910
+starting iteration  12920
+starting iteration  12930
+starting iteration  12940
+starting iteration  12950
+starting iteration  12960
+starting iteration  12970
+starting iteration  12980
+starting iteration  12990
+starting iteration  13000
+starting iteration  13010
+starting iteration  13020
+starting iteration  13030
+starting iteration  13040
+starting iteration  13050
+starting iteration  13060
+starting iteration  13070
+starting iteration  13080
+starting iteration  13090
+starting iteration  13100
+starting iteration  13110
+starting iteration  13120
+starting iteration  13130
+starting iteration  13140
+starting iteration  13150
+starting iteration  13160
+starting iteration  13170
+starting iteration  13180
+starting iteration  13190
+starting iteration  13200
+starting iteration  13210
+starting iteration  13220
+Finished epoch 27 / 28: cost 1.460846, train: 0.579000, val 0.512000, lr 8.722461e-06
+starting iteration  13230
+starting iteration  13240
+starting iteration  13250
+starting iteration  13260
+starting iteration  13270
+starting iteration  13280
+starting iteration  13290
+starting iteration  13300
+starting iteration  13310
+starting iteration  13320
+starting iteration  13330
+starting iteration  13340
+starting iteration  13350
+starting iteration  13360
+starting iteration  13370
+starting iteration  13380
+starting iteration  13390
+starting iteration  13400
+starting iteration  13410
+starting iteration  13420
+starting iteration  13430
+starting iteration  13440
+starting iteration  13450
+starting iteration  13460
+starting iteration  13470
+starting iteration  13480
+starting iteration  13490
+starting iteration  13500
+starting iteration  13510
+starting iteration  13520
+starting iteration  13530
+starting iteration  13540
+starting iteration  13550
+starting iteration  13560
+starting iteration  13570
+starting iteration  13580
+starting iteration  13590
+starting iteration  13600
+starting iteration  13610
+starting iteration  13620
+starting iteration  13630
+starting iteration  13640
+starting iteration  13650
+starting iteration  13660
+starting iteration  13670
+starting iteration  13680
+starting iteration  13690
+starting iteration  13700
+starting iteration  13710
+Finished epoch 28 / 28: cost 1.371728, train: 0.566000, val 0.523000, lr 7.850214e-06
+finished optimization. best validation accuracy: 0.525000
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} visualize the weights}
+        \PY{n}{show\PYZus{}net\PYZus{}weights}\PY{p}{(}\PY{n}{best\PYZus{}model}\PY{p}{)}
+\end{Verbatim}
+
+    \section{Run on the test set}\label{run-on-the-test-set}
+
+When you are done experimenting, you should evaluate your final trained
+network on the test set.
+
+\textbf{We will give you extra bonus point for every 1\% of accuracy
+above 56\%.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}65}]:} \PY{n}{scores\PYZus{}test} \PY{o}{=} \PY{n}{two\PYZus{}layer\PYZus{}net}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{best\PYZus{}model}\PY{p}{)}
+         \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Test accuracy: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{scores\PYZus{}test}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{==} \PY{n}{y\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Test accuracy:  0.507
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
